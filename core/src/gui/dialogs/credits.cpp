@@ -32,6 +32,7 @@ namespace credits {
         ImGui::Spacing();
         ImGui::Spacing();
 
+        /*
         ImGui::TextUnformatted("This software is brought to you by Alexandre Rouma (ON5RYZ) with the help of\n\n");
 
         ImGui::Columns(4, "CreditColumns", true);
@@ -60,6 +61,7 @@ namespace credits {
         }
 
         ImGui::Columns(1, "CreditColumnsEnd", true);
+        */
 
         ImGui::Spacing();
         ImGui::Spacing();
