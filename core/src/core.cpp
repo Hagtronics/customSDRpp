@@ -41,11 +41,11 @@ namespace core {
     void setInputSampleRate(double samplerate) {
         // Forward this to the server
         if (args["server"].b()) { server::setInputSampleRate(samplerate); return; }
-        
+
         // Update IQ frontend input samplerate and get effective samplerate
         sigpath::iqFrontEnd.setSampleRate(samplerate);
         double effectiveSr  = sigpath::iqFrontEnd.getEffectiveSamplerate();
-        
+
         // Reset zoom
         gui::waterfall.setBandwidth(effectiveSr);
         gui::waterfall.setViewOffset(0);
@@ -69,7 +69,7 @@ int sdrpp_main(int argc, char* argv[]) {
 
     // Define command line options and parse arguments
     core::args.defineAll();
-    if (core::args.parse(argc, argv) < 0) { return -1; } 
+    if (core::args.parse(argc, argv) < 0) { return -1; }
 
     // Show help and exit if requested
     if (core::args["help"].b()) {
@@ -142,73 +142,73 @@ int sdrpp_main(int argc, char* argv[]) {
     defConfig["menuElements"][1]["open"] = true;
 
     defConfig["menuElements"][2]["name"] = "Recorder";
-    defConfig["menuElements"][2]["open"] = true;
+    defConfig["menuElements"][2]["open"] = false;
 
     defConfig["menuElements"][3]["name"] = "Sinks";
-    defConfig["menuElements"][3]["open"] = true;
+    defConfig["menuElements"][3]["open"] = false;
 
     defConfig["menuElements"][4]["name"] = "Frequency Manager";
-    defConfig["menuElements"][4]["open"] = true;
+    defConfig["menuElements"][4]["open"] = false;
 
     defConfig["menuElements"][5]["name"] = "VFO Color";
-    defConfig["menuElements"][5]["open"] = true;
+    defConfig["menuElements"][5]["open"] = false;
 
     defConfig["menuElements"][6]["name"] = "Band Plan";
-    defConfig["menuElements"][6]["open"] = true;
+    defConfig["menuElements"][6]["open"] = false;
 
     defConfig["menuElements"][7]["name"] = "Display";
-    defConfig["menuElements"][7]["open"] = true;
+    defConfig["menuElements"][7]["open"] = false;
 
     defConfig["menuWidth"] = 300;
     defConfig["min"] = -120.0;
 
     // Module instances
     defConfig["moduleInstances"]["Airspy Source"]["module"] = "airspy_source";
-    defConfig["moduleInstances"]["Airspy Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Airspy Source"]["enabled"] = false;
     defConfig["moduleInstances"]["AirspyHF+ Source"]["module"] = "airspyhf_source";
-    defConfig["moduleInstances"]["AirspyHF+ Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["AirspyHF+ Source"]["enabled"] = false;
     defConfig["moduleInstances"]["Audio Source"]["module"] = "audio_source";
-    defConfig["moduleInstances"]["Audio Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Audio Source"]["enabled"] = false;
     defConfig["moduleInstances"]["BladeRF Source"]["module"] = "bladerf_source";
-    defConfig["moduleInstances"]["BladeRF Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["BladeRF Source"]["enabled"] = false;
     defConfig["moduleInstances"]["File Source"]["module"] = "file_source";
-    defConfig["moduleInstances"]["File Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["File Source"]["enabled"] = false;
     defConfig["moduleInstances"]["FobosSDR Source"]["module"] = "fobossdr_source";
-    defConfig["moduleInstances"]["FobosSDR Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["FobosSDR Source"]["enabled"] = false;
     defConfig["moduleInstances"]["HackRF Source"]["module"] = "hackrf_source";
-    defConfig["moduleInstances"]["HackRF Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["HackRF Source"]["enabled"] = false;
     defConfig["moduleInstances"]["Harogic Source"]["module"] = "harogic_source";
-    defConfig["moduleInstances"]["Harogic Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Harogic Source"]["enabled"] = false;
     defConfig["moduleInstances"]["Hermes Source"]["module"] = "hermes_source";
-    defConfig["moduleInstances"]["Hermes Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Hermes Source"]["enabled"] = false;
     defConfig["moduleInstances"]["HydraSDR Source"]["module"] = "hydrasdr_source";
-    defConfig["moduleInstances"]["HydraSDR Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["HydraSDR Source"]["enabled"] = false;
     defConfig["moduleInstances"]["LimeSDR Source"]["module"] = "limesdr_source";
-    defConfig["moduleInstances"]["LimeSDR Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["LimeSDR Source"]["enabled"] = false;
     defConfig["moduleInstances"]["Network Source"]["module"] = "network_source";
-    defConfig["moduleInstances"]["Network Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Network Source"]["enabled"] = false;
     defConfig["moduleInstances"]["PerseusSDR Source"]["module"] = "perseus_source";
-    defConfig["moduleInstances"]["PerseusSDR Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["PerseusSDR Source"]["enabled"] = false;
     defConfig["moduleInstances"]["PlutoSDR Source"]["module"] = "plutosdr_source";
     defConfig["moduleInstances"]["PlutoSDR Source"]["enabled"] = true;
     defConfig["moduleInstances"]["RFNM Source"]["module"] = "rfnm_source";
-    defConfig["moduleInstances"]["RFNM Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["RFNM Source"]["enabled"] = false;
     defConfig["moduleInstances"]["RFspace Source"]["module"] = "rfspace_source";
-    defConfig["moduleInstances"]["RFspace Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["RFspace Source"]["enabled"] = false;
     defConfig["moduleInstances"]["RTL-SDR Source"]["module"] = "rtl_sdr_source";
     defConfig["moduleInstances"]["RTL-SDR Source"]["enabled"] = true;
     defConfig["moduleInstances"]["RTL-TCP Source"]["module"] = "rtl_tcp_source";
-    defConfig["moduleInstances"]["RTL-TCP Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["RTL-TCP Source"]["enabled"] = false;
     defConfig["moduleInstances"]["SDRplay Source"]["module"] = "sdrplay_source";
     defConfig["moduleInstances"]["SDRplay Source"]["enabled"] = true;
     defConfig["moduleInstances"]["SDR++ Server Source"]["module"] = "sdrpp_server_source";
-    defConfig["moduleInstances"]["SDR++ Server Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["SDR++ Server Source"]["enabled"] = false;
     defConfig["moduleInstances"]["Spectran HTTP Source"]["module"] = "spectran_http_source";
-    defConfig["moduleInstances"]["Spectran HTTP Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["Spectran HTTP Source"]["enabled"] = false;
     defConfig["moduleInstances"]["SpyServer Source"]["module"] = "spyserver_source";
-    defConfig["moduleInstances"]["SpyServer Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["SpyServer Source"]["enabled"] = false;
     defConfig["moduleInstances"]["USRP Source"]["module"] = "usrp_source";
-    defConfig["moduleInstances"]["USRP Source"]["enabled"] = true;
+    defConfig["moduleInstances"]["USRP Source"]["enabled"] = false;
 
     defConfig["moduleInstances"]["Audio Sink"] = "audio_sink";
     defConfig["moduleInstances"]["Network Sink"] = "network_sink";
