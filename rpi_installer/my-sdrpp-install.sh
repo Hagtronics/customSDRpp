@@ -1,4 +1,8 @@
 #!/usr/bin/sh
+
+# Run this at: /home/pi
+# It will add att files in: /home/pi/customSDRpp
+
 set -e
 
 [ $(id -u) = 0 ] && echo "Please do not run this script as root" && exit 100
@@ -9,7 +13,7 @@ sudo apt install -y build-essential cmake git libfftw3-dev libglfw3-dev libglew-
             libiio-dev libad9361-dev librtaudio-dev libhackrf-dev librtlsdr-dev libbladerf-dev liblimesuite-dev p7zip-full wget
             
 git clone https://github.com/Hagtronics/customSDRpp
-cd SDRPlusPlus            
+cd customSDRpp            
 
 echo "Preparing build"
 sudo mkdir -p build
