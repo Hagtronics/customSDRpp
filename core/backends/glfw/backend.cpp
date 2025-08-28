@@ -51,8 +51,6 @@ namespace backend {
     GLFWwindow* window;
     GLFWmonitor* monitor;
 
-    extern bool setFullScreen;
-
     static void glfw_error_callback(int error, const char* description) {
         flog::error("Glfw Error {0}: {1}", error, description);
     }
