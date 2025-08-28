@@ -11,6 +11,9 @@
 
 #define WINDOW_FLAGS ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground
 
+// Added for fullscreen in gflw/backends.cpp
+inline bool setFullScreen = false;
+
 class MainWindow {
 public:
     void init();
@@ -32,9 +35,6 @@ public:
     bool playButtonLocked = false;
 
     Event<bool> onPlayStateChange;
-
-    // Added for fullscreen in gflw/backends.cpp
-    static bool setFullScreen;
 
 private:
     static void vfoAddedHandler(VFOManager::VFO* vfo, void* ctx);
