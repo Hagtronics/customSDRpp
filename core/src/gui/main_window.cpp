@@ -420,6 +420,7 @@ void MainWindow::draw() {
 
     // ImGui::EndChild();
 
+    /* Was,
     // Logo button
     ImGui::SetCursorPosX(ImGui::GetWindowSize().x - (48 * style::uiScale));
     ImGui::SetCursorPosY(10.0f * style::uiScale);
@@ -435,6 +436,17 @@ void MainWindow::draw() {
 
     // Reset waterfall lock
     lockWaterfallControls = showCredits;
+    */
+
+    /* Is ... */
+    // Logo button - Toggles Fullscreen - the Fullscreen operation is in glfw\backend.cpp
+    // main_window, toggles setFullScreen back off again.
+    ImGui::SetCursorPosX(ImGui::GetWindowSize().x - (48 * style::uiScale));
+    ImGui::SetCursorPosY(10.0f * style::uiScale);
+    if (ImGui::ImageButton(icons::LOGO, ImVec2(32 * style::uiScale, 32 * style::uiScale), ImVec2(0, 0), ImVec2(1, 1), 0)) {
+        if (setFullScreen == false)
+            setFullScreen = true;
+    }
 
     // Handle menu resize
     ImVec2 winSize = ImGui::GetWindowSize();
