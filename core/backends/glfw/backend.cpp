@@ -12,6 +12,8 @@
 #include <stb_image_resize.h>
 #include <gui/gui.h>
 
+#include <gui/main_window.h>
+
 namespace backend {
     const char* OPENGL_VERSIONS_GLSL[] = {
         "#version 120",
