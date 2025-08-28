@@ -51,7 +51,7 @@ namespace backend {
     GLFWwindow* window;
     GLFWmonitor* monitor;
 
-    extern bool MainWindow::setFullScreen;
+    extern bool setFullScreen;
 
     static void glfw_error_callback(int error, const char* description) {
         flog::error("Glfw Error {0}: {1}", error, description);
@@ -279,8 +279,8 @@ namespace backend {
                 */
 
                 /* Is, Toggle fullscreen from Logo Icon being pushed in main_window.cpp */
-                if (MainWindow::setFullScreen) {
-                    MainWindow::setFullScreen = false;
+                if (setFullScreen) {
+                    setFullScreen = false;
                     fullScreen = !fullScreen;
                     if (fullScreen) {
                         flog::info("Fullscreen: ON");
