@@ -34,7 +34,7 @@ public:
     Event<bool> onPlayStateChange;
 
     // Added for fullscreen in gflw/backends.cpp
-    static bool setFullScreen = false;
+    static bool setFullScreen;
 
 private:
     static void vfoAddedHandler(VFOManager::VFO* vfo, void* ctx);

@@ -29,6 +29,7 @@
 #include <gui/tuner.h>
 
 void MainWindow::init() {
+    setFullScreen = false;
     LoadingScreen::show("Initializing UI");
     gui::waterfall.init();
     gui::waterfall.setRawFFTSize(fftSize);
