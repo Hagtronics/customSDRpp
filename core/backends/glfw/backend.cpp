@@ -49,6 +49,8 @@ namespace backend {
     GLFWwindow* window;
     GLFWmonitor* monitor;
 
+    extern bool MainWindow::setFullScreen;
+
     static void glfw_error_callback(int error, const char* description) {
         flog::error("Glfw Error {0}: {1}", error, description);
     }
@@ -102,7 +104,7 @@ namespace backend {
     #if GLFW_VERSION_MAJOR > 3 || (GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR >= 4)
             glfwWindowHintString(GLFW_WAYLAND_APP_ID, "sdrpp");
     #endif
-            
+
             // Create window with graphics context
             monitor = glfwGetPrimaryMonitor();
             window = glfwCreateWindow(winWidth, winHeight, "SDR++ v" VERSION_STR " (Built at " __TIME__ ", " __DATE__ ")", NULL, NULL);
@@ -238,7 +240,7 @@ namespace backend {
             glfwPollEvents();
 
             beginFrame();
-            
+
             if (_maximized != maximized) {
                 _maximized = maximized;
                 core::configManager.acquire();
@@ -251,6 +253,7 @@ namespace backend {
 
             glfwGetWindowSize(window, &_winWidth, &_winHeight);
 
+            /* Was,
             if (ImGui::IsKeyPressed(GLFW_KEY_F11)) {
                 fullScreen = !fullScreen;
                 if (fullScreen) {
@@ -271,6 +274,33 @@ namespace backend {
                     core::configManager.conf["fullscreen"] = false;
                     core::configManager.release();
                 }
+                */
+
+                /* Is, Toggle fullscreen from Logo Icon being pushed in main_window.cpp */
+                if (MainWindow::setFullScreen) {
+                    MainWindow::setFullScreen = false;
+                    fullScreen = !fullScreen;
+                    if (fullScreen) {
+                        flog::info("Fullscreen: ON");
+                        fsWidth = _winWidth;
+                        fsHeight = _winHeight;
+                        glfwGetWindowPos(window, &fsPosX, &fsPosY);
+                        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+                        glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, 0);
+                        core::configManager.acquire();
+                        core::configManager.conf["fullscreen"] = true;
+                        core::configManager.release();
+                    }
+                    else {
+                        flog::info("Fullscreen: OFF");
+                        glfwSetWindowMonitor(window, nullptr, fsPosX, fsPosY, fsWidth, fsHeight, 0);
+                        core::configManager.acquire();
+                        core::configManager.conf["fullscreen"] = false;
+                        core::configManager.release();
+                    }
+
+
+                /* Is, Toggle fullscreen from Logo Icon being pushed in main_window.cpp */
             }
 
             if ((_winWidth != winWidth || _winHeight != winHeight) && !maximized && _winWidth > 0 && _winHeight > 0) {
