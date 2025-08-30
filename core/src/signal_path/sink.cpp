@@ -4,6 +4,8 @@
 #include <gui/style.h>
 #include <gui/icons.h>
 
+#include "midi.h"
+
 #include <core.h>
 
 #define CONCAT(a, b) ((std::string(a) + b).c_str())
@@ -292,12 +294,17 @@ void SinkManager::showVolumeSlider(std::string name, std::string prefix, float w
 
     ImGui::SetNextItemWidth(width - height - sliderOffset);
     ImGui::SetCursorPosY(ypos + ((height - sliderHeight) / 2.0f) + btnBorder);
-    if (ImGui::SliderFloat((prefix + name).c_str(), &stream->guiVolume, 0.0f, 1.0f, "")) {
+
+	// MIDI Changes
+    bool midiChanged = midi::getVolume(&stream->guiVolume, 0.1f, 1.0f);
+	bool sliderChanged = ImGui::SliderFloat((prefix + name).c_str(), &stream->guiVolume, 0.0f, 1.0f, "")
+    if (midiChanged || sliderChanged) {
         stream->setVolume(stream->guiVolume);
         core::configManager.acquire();
         saveStreamConfig(name);
         core::configManager.release(true);
     }
+
     if (sameLine) { ImGui::SetCursorPosY(ypos); }
     //ImGui::SetCursorPosY(ypos);
 }
