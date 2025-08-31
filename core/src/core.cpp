@@ -65,7 +65,7 @@ int sdrpp_main(int argc, char* argv[]) {
     flog::info("SDR++ v" VERSION_STR);
 
     // MIDI Start
-    if(Midi::init())
+    if(Midi::init("Pico CircuitPython"))
         flog::info("MIDI Started.");
     else
         flog::info("MIDI Did NOT Start.");
