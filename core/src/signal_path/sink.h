@@ -10,6 +10,8 @@
 #include <utils/event.h>
 #include <vector>
 
+#include "../midi.h"
+
 class SinkManager {
 public:
     SinkManager();
