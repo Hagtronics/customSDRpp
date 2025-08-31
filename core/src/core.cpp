@@ -15,6 +15,9 @@
 #include <gui/menus/theme.h>
 #include <backend.h>
 
+// MIDI
+#include "midi.h"
+
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize.h>
 #include <gui/gui.h>
@@ -60,6 +63,13 @@ namespace core {
 // main
 int sdrpp_main(int argc, char* argv[]) {
     flog::info("SDR++ v" VERSION_STR);
+
+    // MIDI Start
+    if(Midi::init())
+        flog::info("MIDI Started.");
+    else
+        flog::info("MIDI Did NOT Start.");
+
 
 #ifdef IS_MACOS_BUNDLE
     // If this is a MacOS .app, CD to the correct directory
@@ -114,7 +124,7 @@ int sdrpp_main(int argc, char* argv[]) {
     defConfig["bandPlanEnabled"] = true;
     defConfig["bandPlanPos"] = 0;
     defConfig["centerTuning"] = false;
-    defConfig["colorMap"] = "WebSDR";   //defConfig["colorMap"] = "Classic"; 
+    defConfig["colorMap"] = "WebSDR";   //defConfig["colorMap"] = "Classic";
     defConfig["fftHold"] = false;
     defConfig["fftHoldSpeed"] = 60;
     defConfig["fftSmoothing"] = false;
