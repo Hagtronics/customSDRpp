@@ -87,14 +87,14 @@ bool Midi::getTune(float &value) {
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getVolume(float &scaledValue, float minValue, float maxValue) {
+bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
     static int lastVolumeKnob = 0;
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
 
     if(lastVolumeKnob != Midi::currentVolumeKnob){
-        scaledValue = Midi::scaleKnob(scaledValue, minValue, maxValue);
+        *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
         lastVolumeKnob = Midi::currentVolumeKnob;
         changed = true;
     }
