@@ -35,6 +35,9 @@
 #endif
 #endif
 
+// MIDI
+Midi midi;
+
 namespace core {
     ConfigManager configManager;
     ModuleManager moduleManager;
@@ -65,7 +68,7 @@ int sdrpp_main(int argc, char* argv[]) {
     flog::info("SDR++ v" VERSION_STR);
 
     // MIDI Start
-    if(Midi::init("Pico CircuitPython"))
+    if(midi.init("Pico CircuitPython"))
         flog::info("MIDI Started.");
     else
         flog::info("MIDI Did NOT Start.");
