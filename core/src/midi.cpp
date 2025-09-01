@@ -5,6 +5,7 @@
 #include <string>
 #include "rtmidi/RtMidi.h"
 #include "midi.h"
+#include <utils/flog.h>
 
 // TODO - fill this decoder out
 
@@ -42,10 +43,17 @@ bool Midi::init(std::string desired_controller_name) {
     try {
         midiin = new RtMidiIn();
 
+        flog::info("Looking for Midi Port,");
+        flog::info(desired_controller_name.c_str());
+
         unsigned int nPorts = midiin->getPortCount();
+
+
 
         for (unsigned int i = 0; i < nPorts; i++) {
             std::string portName = midiin->getPortName(i);
+            flog::info("Midi Port Name Found,");
+            flog::info(portName.c_str());
 
             if (portName.find(desired_controller_name) != std::string::npos) {
                 // Found the name - try to open the port number
