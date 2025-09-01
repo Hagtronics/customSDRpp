@@ -1,5 +1,7 @@
 #pragma once
-#include "rtmidi\RtMidi.h"
+// #include "rtmidi\RtMidi.h"
+#include "RtMidi.h"
+
 /* MIDI Functionality Header */
 
 class Midi {
