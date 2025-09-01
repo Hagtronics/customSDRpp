@@ -448,7 +448,7 @@ void MainWindow::draw() {
         if (setFullScreen == false)
             setFullScreen = true;
         else
-            setFullscreen = false;
+            setFullScreen = false;
     }
 
     // Handle menu resize
