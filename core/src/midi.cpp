@@ -8,7 +8,7 @@
 
 // TODO - fill this decoder out
 
-void Midi::midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
+void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
     // for (unsigned int i = 0; i < nBytes; i++)
     //     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
@@ -54,7 +54,7 @@ bool Midi::init(std::string desired_controller_name) {
                 // Set our callback function.  This should be done immediately after
                 // opening the port to avoid having incoming messages written to the
                 // queue instead of sent to the callback function.
-                midiin->setCallback(&Midi::midi_msg_cb);
+                midiin->setCallback(&midi_msg_cb);
 
                 // TODO - Figure out what this really does
                 // Don't ignore sysex, timing, or active sensing messages.

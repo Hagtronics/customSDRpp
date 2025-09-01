@@ -36,5 +36,5 @@ private:
     // Tune step is in Hz
     int currentTuneStep = 1000;
     float scaleKnob(int knob, float min, float max);
-    void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/);
+    //void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/);
 };
