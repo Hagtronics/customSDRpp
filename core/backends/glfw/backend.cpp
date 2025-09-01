@@ -70,7 +70,10 @@ namespace backend {
         winWidth = core::configManager.conf["windowSize"]["w"];
         winHeight = core::configManager.conf["windowSize"]["h"];
         maximized = core::configManager.conf["maximized"];
-        fullScreen = core::configManager.conf["fullscreen"];
+
+        // Ignore what the config says - always start not fullscreen
+        fullScreen = false; // core::configManager.conf["fullscreen"];
+
         core::configManager.release();
 
         // Setup window
