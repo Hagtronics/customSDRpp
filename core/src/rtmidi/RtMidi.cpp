@@ -44,7 +44,7 @@
 #endif
 
 // !HACK - Hack for Linux
-#define __LINUX_ALSA__
+// #define __LINUX_ALSA__
 
 #if (TARGET_OS_IPHONE == 1)
 
