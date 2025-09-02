@@ -43,6 +43,9 @@
 #include <TargetConditionals.h>
 #endif
 
+// !HACK - Hack for Linux
+#define __LINUX_ALSA__
+
 #if (TARGET_OS_IPHONE == 1)
 
     #define AudioGetCurrentHostTime CAHostTimeBase::GetCurrentTime
@@ -85,6 +88,7 @@
 // MidiInApi and MidiOutApi subclass prototypes.
 //
 // **************************************************************** //
+
 
 #if !defined(__LINUX_ALSA__) && !defined(__UNIX_JACK__) && !defined(__MACOSX_CORE__) && !defined(__WINDOWS_MM__) && !defined(__WINDOWS_UWP__) && !defined(TARGET_IPHONE_OS) && !defined(__WEB_MIDI_API__)  && !defined(__AMIDI__)
   #define __RTMIDI_DUMMY__
