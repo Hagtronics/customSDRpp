@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(sdrpp)
 
 # Midi Hack
-target_link_libraries(rtmidi PRIVATE "LINKER: asound pthread")
+# target_link_libraries(rtmidi PRIVATE "LINKER: asound pthread")
 
 
 # Backends
