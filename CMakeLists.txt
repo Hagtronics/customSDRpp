@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(sdrpp)
 
-# Midi Hack
-# target_link_libraries(rtmidi PRIVATE "LINKER: asound pthread")
-
-
 # Backends
 option(OPT_BACKEND_GLFW "Use the GLFW backend" ON)
 option(OPT_BACKEND_ANDROID "Use the Android backend" OFF)
@@ -348,6 +344,7 @@ else ()
 endif ()
 
 target_link_libraries(sdrpp PRIVATE sdrpp_core)
+target_link_libraries(${PROJECT_NAME} PRIVATE rtmidi)
 
 # Compiler arguments
 target_compile_options(sdrpp PRIVATE ${SDRPP_COMPILER_FLAGS})
