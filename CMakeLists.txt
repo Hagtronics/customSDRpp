@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
 project(sdrpp)
 
+# Midi Hack
+target_link_libraries(rtmidi PRIVATE "LINKER: asound pthread")
+
+
 # Backends
 option(OPT_BACKEND_GLFW "Use the GLFW backend" ON)
 option(OPT_BACKEND_ANDROID "Use the Android backend" OFF)
@@ -363,7 +367,7 @@ if (MSVC)
         foreach(DLL IN LISTS CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
             set(REDIST_DLLS_STR COMMAND xcopy /F \"${DLL}\" \"$<TARGET_FILE_DIR:sdrpp>\" /Y ${REDIST_DLLS_STR})
         endforeach()
-        
+
         # Create target
         add_custom_target(do_always_msvc ALL ${REDIST_DLLS_STR})
     endif ()
