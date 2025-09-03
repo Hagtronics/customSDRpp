@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include "rtmidi/RtMidi.h"
+//#include "rtmidi/RtMidi.h"
 #include "midi.h"
 #include <utils/flog.h>
 
@@ -16,10 +16,13 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     // if (nBytes > 0)
     //     std::cout << "stamp = " << deltatime << std::endl;
 
+    flog::info("MIDI CB Called");
+
     switch((int)message->at(1))
     {
         case 10: // Volume
             //Midi::currentVolumeKnob = (int)message->at(2);
+            flog::info("Volume MIDI CB Called");
             break;
 
         default:
@@ -47,8 +50,6 @@ bool Midi::init(std::string desired_controller_name) {
         flog::info(desired_controller_name.c_str());
 
         unsigned int nPorts = midiin->getPortCount();
-
-
 
         for (unsigned int i = 0; i < nPorts; i++) {
             std::string portName = midiin->getPortName(i);

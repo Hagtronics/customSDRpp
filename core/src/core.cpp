@@ -71,7 +71,7 @@ int sdrpp_main(int argc, char* argv[]) {
     if(midi.init("Pico CircuitPython"))
         flog::info("MIDI Started.");
     else
-        flog::info("MIDI Did NOT Start.");
+        flog::warn("MIDI Did NOT Start.");
 
 
 #ifdef IS_MACOS_BUNDLE
