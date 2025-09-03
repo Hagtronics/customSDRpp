@@ -10,7 +10,7 @@
 // Class functions
 
 // Wheel is = 0, 1, 2 or 5
-static volatile int currentTuneWheel = 0;
+static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
 static volatile int currentVolumeKnob = 0;
