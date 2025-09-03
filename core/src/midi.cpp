@@ -7,7 +7,21 @@
 #include "midi.h"
 #include <utils/flog.h>
 
-// TODO - fill this decoder out
+// Class functions
+
+// Wheel is = 0, 1, 2 or 5
+float currentTuneWheel = 0;
+
+// Knob positions = 0 to 127
+int currentVolumeKnob = 0;
+int currentSquelchKnob = 0;
+int currentRfGainKnob = 0;
+int currentIfGainKnob = 0;
+int currentPanHKnob = 0;
+int currentPanLKnob = 0;
+
+// Tune step is in Hz
+int currentTuneStep = 1000;
 
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
@@ -16,17 +30,17 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     // if (nBytes > 0)
     //     std::cout << "stamp = " << deltatime << std::endl;
 
-    flog::info("MIDI CB Called -> MSG -> VAL");
-    std::string msg = std::to_string((int)message->at(1));
-    std::string val = std::to_string((int)message->at(2));
-    flog::info(msg.c_str());
-    flog::info(val.c_str());
+    //flog::info("MIDI CB Called -> MSG -> VAL");
+    //std::string msg = std::to_string((int)message->at(1));
+    //std::string val = std::to_string((int)message->at(2));
+    ///flog::info(msg.c_str());
+    //flog::info(val.c_str());
 
     switch((int)message->at(1))
     {
         case 10: // Volume
-            //Midi::currentVolumeKnob = (int)message->at(2);
-            //flog::info("Volume MIDI CB Called");
+            currentVolumeKnob = (int)message->at(2);
+            flog::info("Volume MIDI CB Called");
             break;
 
         default:
@@ -99,6 +113,14 @@ bool Midi::getTune(float &value) {
     return changed;
 }
 
+
+std::string btos(bool x)
+{
+    if (x)
+        return "True";
+    return "False";
+}
+
 /* Knob: If true, value is the knob position 0-127 */
 bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
     static int lastVolumeKnob = 0;
@@ -106,11 +128,17 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 
     if(Midi::midiDisabled) return false;
 
-    if(lastVolumeKnob != Midi::currentVolumeKnob){
+    if(lastVolumeKnob != currentVolumeKnob){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
-        lastVolumeKnob = Midi::currentVolumeKnob;
+        lastVolumeKnob = currentVolumeKnob;
         changed = true;
     }
+
+    flog::info("getVolume Called -> changed -> current knob val");
+    flog::info(btos(changed).c_str());
+    std::string val = std::to_string(currentVolumeKnob);
+    flog::info(val.c_str());
+
     return changed;
 }
 
