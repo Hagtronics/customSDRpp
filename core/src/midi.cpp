@@ -14,7 +14,7 @@ static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
 volatile int currentVolumeKnob = 0;
-static volatile int currentSquelchKnob = 0;
+volatile int currentSquelchKnob = 0;
 static volatile int currentRfGainKnob = 0;
 static volatile int currentIfGainKnob = 0;
 static volatile int currentPanHKnob = 0;
