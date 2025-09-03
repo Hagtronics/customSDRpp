@@ -40,7 +40,9 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     {
         case 10: // Volume
             currentVolumeKnob = (int)message->at(2);
-            flog::info("Volume MIDI CB Called");
+            flog::info("Volume MIDI CB Called -> Current knob");
+            std::string val = std::to_string(currentVolumeKnob);
+            flog::info(val.c_str());
             break;
 
         default:
