@@ -10,18 +10,18 @@
 // Class functions
 
 // Wheel is = 0, 1, 2 or 5
-static float currentTuneWheel = 0;
+static volatile int currentTuneWheel = 0;
 
 // Knob positions = 0 to 127
-static int currentVolumeKnob = 0;
-static int currentSquelchKnob = 0;
-static int currentRfGainKnob = 0;
-static int currentIfGainKnob = 0;
-static int currentPanHKnob = 0;
-static int currentPanLKnob = 0;
+static volatile int currentVolumeKnob = 0;
+static volatile int currentSquelchKnob = 0;
+static volatile int currentRfGainKnob = 0;
+static volatile int currentIfGainKnob = 0;
+static volatile int currentPanHKnob = 0;
+static volatile int currentPanLKnob = 0;
 
 // Tune step is in Hz
-static int currentTuneStep = 1000;
+static volatile int currentTuneStep = 1000;
 
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
