@@ -17,11 +17,14 @@ public:
     bool getStepPlus();
     bool getStepMinus();
 
+    static std::atomic<int> currentVolumeKnob = 0;
+
 private:
     RtMidiIn *midiin = 0;
     bool midiDisabled = true;
     bool message_ready = false;
 
+    /*
     // Wheel is = 0, 1, 2 or 5
     float currentTuneWheel = 0;
 
@@ -35,6 +38,8 @@ private:
 
     // Tune step is in Hz
     int currentTuneStep = 1000;
+    */
+
     float scaleKnob(int knob, float min, float max);
     //void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/);
 };

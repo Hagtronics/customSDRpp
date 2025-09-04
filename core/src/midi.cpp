@@ -7,13 +7,14 @@
 #include "midi.h"
 #include <utils/flog.h>
 
+
 // Class functions
 
 // Wheel is = 0, 1, 2 or 5
 static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
-static std::atomic<int> currentVolumeKnob = 0;
+//static std::atomic<int> currentVolumeKnob = 0;
 static volatile int currentSquelchKnob = 0;
 static volatile int currentRfGainKnob = 0;
 static volatile int currentIfGainKnob = 0;
@@ -40,9 +41,9 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     switch((int)message->at(1))
     {
         case 10: // Volume
-            currentVolumeKnob.store((int)message->at(2));
+            Midi::currentVolumeKnob.store((int)message->at(2));
             flog::info("Volume MIDI CB Called -> Current knob");
-            val = std::to_string(currentVolumeKnob.load());
+            val = std::to_string(Midi::currentVolumeKnob.load());
             flog::info(val.c_str());
             break;
 
@@ -92,6 +93,10 @@ bool Midi::init(std::string desired_controller_name) {
 
                 // All set, so return
                 Midi::midiDisabled = false;
+
+                // Init values
+                Midi::currentVolumeKnob.store(0);
+
                 return true;
             }
         }
@@ -131,7 +136,7 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 
     if(Midi::midiDisabled) return false;
 
-    if(lastVolumeKnob != (std::atomic<int>) currentVolumeKnob.load()){
+    if(lastVolumeKnob != Midi::currentVolumeKnob.load()){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
         lastVolumeKnob = currentVolumeKnob;
         changed = true;
