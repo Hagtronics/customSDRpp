@@ -40,9 +40,9 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     switch((int)message->at(1))
     {
         case 10: // Volume
-            currentVolumeKnob = (int)message->at(2);
+            currentVolumeKnob.store((int)message->at(2));
             flog::info("Volume MIDI CB Called -> Current knob");
-            val = std::to_string(currentVolumeKnob);
+            val = std::to_string(currentVolumeKnob.load());
             flog::info(val.c_str());
             break;
 
@@ -131,7 +131,7 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 
     if(Midi::midiDisabled) return false;
 
-    if(lastVolumeKnob != currentVolumeKnob){
+    if(lastVolumeKnob != currentVolumeKnob.load()){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
         lastVolumeKnob = currentVolumeKnob;
         changed = true;
