@@ -47,6 +47,15 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
         case 10: // Volume
             currentVolumeKnob.store((int)message->at(2));
             break;
+        case 11: // Squelch
+            currentSquelchKnob.store((int)message->at(2));
+            break;
+        case 12: // RF Gain
+            currentRfGainKnob.store((int)message->at(2));
+            break;
+        case 13: // IF Gain
+            currentIfGainKnob.store((int)message->at(2));
+            break;
 
         default:
             break;
@@ -113,7 +122,7 @@ bool Midi::init(std::string desired_controller_name) {
 
 
 /* Wheel: If true, value contains the number of tune steps to take. */
-bool Midi::getTune(float &value) {
+bool Midi::getTune(float *value) {
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
@@ -123,12 +132,12 @@ bool Midi::getTune(float &value) {
 }
 
 
-std::string btos(bool x)
-{
-    if (x)
-        return "True";
-    return "False";
-}
+// std::string btos(bool x)
+// {
+//     if (x)
+//         return "True";
+//     return "False";
+// }
 
 /* Knob: If true, value is the knob position 0-127 */
 bool Midi::getZoom(float *scaledValue, float minValue, float maxValue) {
@@ -167,34 +176,95 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getSquelch(float &value, float minValue, float maxValue){
+bool Midi::getSquelch(float *scaledValue, float minValue, float maxValue) {
+    static int lastSquelchKnob = 0;
+    bool changed = false;
+
     if(Midi::midiDisabled) return false;
-    return false;
+
+    int current = currentSquelchKnob.load();
+
+    if(lastSquelchKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastSquelchKnob = current;
+        changed = true;
+    }
+
+    return changed;
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getRfGain(float &value, float minValue, float maxValue) {
+bool Midi::getRfGain(float *scaledValue, float minValue, float maxValue) {
+    static int lastRfGainKnob = 0;
+    bool changed = false;
+
     if(Midi::midiDisabled) return false;
-    return false;
+
+    int current = currentRfGainKnob.load();
+
+    if(lastRfGainKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastRfGainKnob = current;
+        changed = true;
+    }
+
+    return changed;
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getIfGain(float &value, float minValue, float maxValue) {
+bool Midi::getIfGain(float *scaledValue, float minValue, float maxValue) {
+    static int lastIfGainKnob = 0;
+    bool changed = false;
+
     if(Midi::midiDisabled) return false;
-    return false;
+
+    int current = currentIfGainKnob.load();
+
+    if(lastIfGainKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastIfGainKnob = current;
+        changed = true;
+    }
+
+    return changed;
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getPanH(float &value, float minValue, float maxValue) {
+bool Midi::getPanH(float *scaledValue, float minValue, float maxValue) {
+    static int lastPanHKnob = 0;
+    bool changed = false;
+
     if(Midi::midiDisabled) return false;
-    return false;
+
+    int current = currentPanHKnob.load();
+
+    if(lastPanHKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastPanHKnob = current;
+        changed = true;
+    }
+
+    return changed;
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getPanL(float &value, float minValue, float maxValue) {
+bool Midi::getPanL(float *scaledValue, float minValue, float maxValue) {
+    static int lastPanLKnob = 0;
+    bool changed = false;
+
     if(Midi::midiDisabled) return false;
-    return false;
+
+    int current = currentPanLKnob.load();
+
+    if(lastPanLKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastPanLKnob = current;
+        changed = true;
+    }
+
+    return changed;
 }
+
 
 /* Button: If true, button was pressed */
 bool Midi::getStepPlus() {
