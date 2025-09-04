@@ -676,7 +676,7 @@ void MainWindow::draw() {
     ImGui::SetItemUsingMouseWheel();
 
     // MIDI Changes
-    knob = midi.getPanL(&fftMin, 1.0, 0.0);
+    knob = midi.getPanL(&fftMin, 0.0f, -160.0f);
     slider = ImGui::VSliderFloat("##_9_", wfSliderSize, &fftMin, 0.0, -160.0f, "");
     if (knob || slider) {
         fftMin = std::min<float>(fftMax - 10, fftMin);
