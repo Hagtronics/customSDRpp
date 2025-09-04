@@ -18,7 +18,7 @@ public:
     bool getStepPlus();
     bool getStepMinus();
 
-    static std::atomic<int> currentVolumeKnob;
+    //static std::atomic<int> currentVolumeKnob;
 
 private:
     RtMidiIn *midiin = 0;

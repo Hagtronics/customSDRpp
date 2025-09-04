@@ -14,7 +14,7 @@
 static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
-//static std::atomic<int> currentVolumeKnob = 0;
+static std::atomic<int> currentVolumeKnob = 0;
 static volatile int currentSquelchKnob = 0;
 static volatile int currentRfGainKnob = 0;
 static volatile int currentIfGainKnob = 0;
@@ -41,10 +41,10 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     switch((int)message->at(1))
     {
         case 10: // Volume
-            //Midi::currentVolumeKnob.store((int)message->at(2));
+            currentVolumeKnob.store((int)message->at(2));
             flog::info("Volume MIDI CB Called -> Current knob");
-            //val = std::to_string(Midi::currentVolumeKnob.load());
-            //flog::info(val.c_str());
+            val = std::to_string(currentVolumeKnob.load());
+            flog::info(val.c_str());
             break;
 
         default:
@@ -95,7 +95,7 @@ bool Midi::init(std::string desired_controller_name) {
                 Midi::midiDisabled = false;
 
                 // Init values
-                //Midi::currentVolumeKnob.store(0);
+                currentVolumeKnob.store(0);
 
                 return true;
             }
@@ -135,16 +135,17 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
+    int current = currentVolumeKnob.load();
 
-    if(lastVolumeKnob != Midi::currentVolumeKnob.load()){
+    if(lastVolumeKnob != current){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
-        lastVolumeKnob = Midi::currentVolumeKnob.load();
+        lastVolumeKnob = current;
         changed = true;
     }
 
-    flog::info("getVolume Called -> changed -> current knob val -> last knob val");
+    flog::info("getVolume Called -> changed -> current -> last");
     flog::info(btos(changed).c_str());
-    std::string val = std::to_string(Midi::currentVolumeKnob.load());
+    std::string val = std::to_string(current);
     flog::info(val.c_str());
     val = std::to_string(lastVolumeKnob);
     flog::info(val.c_str());
