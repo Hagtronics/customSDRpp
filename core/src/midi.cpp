@@ -11,18 +11,19 @@
 // Class functions
 
 // Wheel is = 0, 1, 2 or 5
-static volatile int currentTuneWheel = 1;
+static std::atomic<int> currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
+static std::atomic<int> currentZoomKnob = 0;
 static std::atomic<int> currentVolumeKnob = 0;
-static volatile int currentSquelchKnob = 0;
-static volatile int currentRfGainKnob = 0;
-static volatile int currentIfGainKnob = 0;
-static volatile int currentPanHKnob = 0;
-static volatile int currentPanLKnob = 0;
+static std::atomic<int> currentSquelchKnob = 0;
+static std::atomic<int> currentRfGainKnob = 0;
+static std::atomic<int> currentIfGainKnob = 0;
+static std::atomic<int> currentPanHKnob = 0;
+static std::atomic<int> currentPanLKnob = 0;
 
 // Tune step is in Hz
-static volatile int currentTuneStep = 1000;
+static std::atomic<int> currentTuneStep = 1000;
 
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
@@ -40,11 +41,11 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
     switch((int)message->at(1))
     {
+        case 9: // Zoom
+            currentZoomKnob.store((int)message->at(2));
+            break;
         case 10: // Volume
             currentVolumeKnob.store((int)message->at(2));
-            //flog::info("Volume MIDI CB Called -> Current knob");
-            //val = std::to_string(currentVolumeKnob.load());
-            //flog::info(val.c_str());
             break;
 
         default:
@@ -130,6 +131,24 @@ std::string btos(bool x)
 }
 
 /* Knob: If true, value is the knob position 0-127 */
+bool Midi::getZoom(float *scaledValue, float minValue, float maxValue) {
+    static int lastZoomKnob = 0;
+    bool changed = false;
+
+    if(Midi::midiDisabled) return false;
+
+    int current = currentZoomKnob.load();
+
+    if(lastZoomKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastZoomKnob = current;
+        changed = true;
+    }
+
+    return changed;
+}
+
+/* Knob: If true, value is the knob position 0-127 */
 bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
     static int lastVolumeKnob = 0;
     bool changed = false;
@@ -143,15 +162,6 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
         lastVolumeKnob = current;
         changed = true;
     }
-
-    /*
-    flog::info("getVolume Called -> changed -> current -> last");
-    flog::info(btos(changed).c_str());
-    std::string val = std::to_string(current);
-    flog::info(val.c_str());
-    val = std::to_string(lastVolumeKnob);
-    flog::info(val.c_str());
-    */
 
     return changed;
 }
