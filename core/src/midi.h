@@ -16,6 +16,8 @@ public:
     bool getIfGain(float *scaledValue, float minValue, float maxValue);
     bool getPanH(float *scaledValue, float minValue, float maxValue);
     bool getPanL(float *scaledValue, float minValue, float maxValue);
+    bool getRfGain(int *scaledValue, int minValue, int maxValue);
+    bool getIfGain(int *scaledValue, int minValue, int maxValue);
     bool getStepPlus();
     bool getStepMinus();
 
@@ -24,4 +26,5 @@ private:
     bool midiDisabled = true;
 
     float scaleKnob(int knob, float min, float max);
+    int scaleKnob(int knob, int min, int max);
 };

@@ -56,6 +56,12 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
         case 13: // IF Gain
             currentIfGainKnob.store((int)message->at(2));
             break;
+        case 14: // Pan H
+            currentPanHKnob.store((int)message->at(2));
+            break;
+        case 15: // Pan L
+            currentPanLKnob.store((int)message->at(2));
+            break;
 
         default:
             break;
@@ -68,8 +74,13 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 // Takes a raw knob value (0-127) and scales it between the min and max given
 // returns the scaled value.
 float Midi::scaleKnob(int knobValue, float minValue, float maxValue){
-    float sf =(maxValue - minValue) / 127.0f;
+    float sf = (maxValue - minValue) / 127.0f;
     return( ((float)knobValue * sf) + minValue );
+}
+
+int Midi::scaleKnob(int knobValue, int minValue, int maxValue){
+    float sf = (maxValue - minValue) / 127;
+    return(((int)((float)knobValue * sf)) + minValue );
 }
 
 
@@ -104,9 +115,6 @@ bool Midi::init(std::string desired_controller_name) {
                 // All set, so return
                 Midi::midiDisabled = false;
 
-                // Init values
-                currentVolumeKnob.store(0);
-
                 return true;
             }
         }
@@ -130,14 +138,6 @@ bool Midi::getTune(float *value) {
     // Finally clear flags and values to reset the control.
     return changed;
 }
-
-
-// std::string btos(bool x)
-// {
-//     if (x)
-//         return "True";
-//     return "False";
-// }
 
 /* Knob: If true, value is the knob position 0-127 */
 bool Midi::getZoom(float *scaledValue, float minValue, float maxValue) {
@@ -194,7 +194,7 @@ bool Midi::getSquelch(float *scaledValue, float minValue, float maxValue) {
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getRfGain(float *scaledValue, float minValue, float maxValue) {
+bool Midi::getRfGain(int *scaledValue, int minValue, int maxValue) {
     static int lastRfGainKnob = 0;
     bool changed = false;
 
@@ -212,7 +212,7 @@ bool Midi::getRfGain(float *scaledValue, float minValue, float maxValue) {
 }
 
 /* Knob: If true, value is the knob position 0-127 */
-bool Midi::getIfGain(float *scaledValue, float minValue, float maxValue) {
+bool Midi::getIfGain(int *scaledValue, int minValue, int maxValue) {
     static int lastIfGainKnob = 0;
     bool changed = false;
 
@@ -264,7 +264,6 @@ bool Midi::getPanL(float *scaledValue, float minValue, float maxValue) {
 
     return changed;
 }
-
 
 /* Button: If true, button was pressed */
 bool Midi::getStepPlus() {
