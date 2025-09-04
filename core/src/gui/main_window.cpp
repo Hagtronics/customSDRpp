@@ -636,7 +636,7 @@ void MainWindow::draw() {
     ImVec2 wfSliderSize(20.0 * style::uiScale, 150.0 * style::uiScale);
 
     // MIDI Changes
-    bool knob = Midi::getZoom(&bw, 1.0, 0.0);
+    bool knob = midi.getZoom(&bw, 1.0, 0.0);
     bool slider = ImGui::VSliderFloat("##_7_", wfSliderSize, &bw, 1.0, 0.0, "")
     if (knob || slider) {
         double factor = (double)bw * (double)bw;
