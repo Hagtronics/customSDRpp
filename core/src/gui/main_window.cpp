@@ -636,7 +636,7 @@ void MainWindow::draw() {
     ImVec2 wfSliderSize(20.0 * style::uiScale, 150.0 * style::uiScale);
 
     // MIDI Changes
-    bool knob = midi.getZoom(&bw, 1.0, 0.0);
+    bool knob = midi.getZoom(&bw, 1.0f, 0.0f);
     bool slider = ImGui::VSliderFloat("##_7_", wfSliderSize, &bw, 1.0, 0.0, "");
     if (knob || slider) {
         double factor = (double)bw * (double)bw;
@@ -657,7 +657,11 @@ void MainWindow::draw() {
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x / 2.0) - (ImGui::CalcTextSize("Max").x / 2.0));
     ImGui::TextUnformatted("Max");
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x / 2.0) - 10 * style::uiScale);
-    if (ImGui::VSliderFloat("##_8_", wfSliderSize, &fftMax, 0.0, -160.0f, "")) {
+
+    // MIDI Changes
+    knob = midi.getPanH(&fftMax, 0.0f, -160.0f);
+    slider = ImGui::VSliderFloat("##_8_", wfSliderSize, &fftMax, 0.0, -160.0f, "");
+    if (knob || slider) {
         fftMax = std::max<float>(fftMax, fftMin + 10);
         core::configManager.acquire();
         core::configManager.conf["max"] = fftMax;
@@ -670,7 +674,11 @@ void MainWindow::draw() {
     ImGui::TextUnformatted("Min");
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x / 2.0) - 10 * style::uiScale);
     ImGui::SetItemUsingMouseWheel();
-    if (ImGui::VSliderFloat("##_9_", wfSliderSize, &fftMin, 0.0, -160.0f, "")) {
+
+    // MIDI Changes
+    knob = midi.getPanL(&fftMin, 1.0, 0.0);
+    slider = ImGui::VSliderFloat("##_9_", wfSliderSize, &fftMin, 0.0, -160.0f, "");
+    if (knob || slider) {
         fftMin = std::min<float>(fftMax - 10, fftMin);
         core::configManager.acquire();
         core::configManager.conf["min"] = fftMin;
