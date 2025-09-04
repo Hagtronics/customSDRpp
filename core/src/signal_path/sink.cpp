@@ -299,7 +299,7 @@ void SinkManager::showVolumeSlider(std::string name, std::string prefix, float w
     ImGui::SetCursorPosY(ypos + ((height - sliderHeight) / 2.0f) + btnBorder);
 
 	// MIDI Changes
-    bool midiChanged = midi.getVolume(&stream->guiVolume, 0.1f, 1.0f);
+    bool midiChanged = midi.getVolume(&stream->guiVolume, 0.0f, 1.0f);
 	bool sliderChanged = ImGui::SliderFloat((prefix + name).c_str(), &stream->guiVolume, 0.0f, 1.0f, "");
     if (midiChanged || sliderChanged) {
         stream->setVolume(stream->guiVolume);
