@@ -637,7 +637,7 @@ void MainWindow::draw() {
 
     // MIDI Changes
     bool knob = midi.getZoom(&bw, 1.0, 0.0);
-    bool slider = ImGui::VSliderFloat("##_7_", wfSliderSize, &bw, 1.0, 0.0, "")
+    bool slider = ImGui::VSliderFloat("##_7_", wfSliderSize, &bw, 1.0, 0.0, "");
     if (knob || slider) {
         double factor = (double)bw * (double)bw;
 
