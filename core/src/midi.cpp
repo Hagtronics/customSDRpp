@@ -138,13 +138,13 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 
     if(lastVolumeKnob != Midi::currentVolumeKnob.load()){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
-        lastVolumeKnob = currentVolumeKnob;
+        lastVolumeKnob = Midi::currentVolumeKnob.load();
         changed = true;
     }
 
     flog::info("getVolume Called -> changed -> current knob val -> last knob val");
     flog::info(btos(changed).c_str());
-    std::string val = std::to_string(currentVolumeKnob);
+    std::string val = std::to_string(Midi::currentVolumeKnob.load());
     flog::info(val.c_str());
     val = std::to_string(lastVolumeKnob);
     flog::info(val.c_str());
