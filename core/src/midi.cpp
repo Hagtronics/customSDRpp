@@ -13,7 +13,7 @@
 static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
-std::atomic<int> currentVolumeKnob(0);
+static std::atomic<int> currentVolumeKnob(0);
 static volatile int currentSquelchKnob = 0;
 static volatile int currentRfGainKnob = 0;
 static volatile int currentIfGainKnob = 0;
@@ -131,7 +131,7 @@ bool Midi::getVolume(float *scaledValue, float minValue, float maxValue) {
 
     if(Midi::midiDisabled) return false;
 
-    if(lastVolumeKnob != currentVolumeKnob.load()){
+    if(lastVolumeKnob != (std::atomic<int>) currentVolumeKnob.load()){
         *scaledValue = Midi::scaleKnob(*scaledValue, minValue, maxValue);
         lastVolumeKnob = currentVolumeKnob;
         changed = true;
