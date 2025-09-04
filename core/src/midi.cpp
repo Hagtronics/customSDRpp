@@ -87,7 +87,7 @@ bool Midi::init(std::string desired_controller_name) {
                 // queue instead of sent to the callback function.
                 midiin->setCallback(&midi_msg_cb);
 
-                // TODO - Figure out what this really does
+                // TODO - Figure out what this really does....
                 // Don't ignore sysex, timing, or active sensing messages.
                 midiin->ignoreTypes(false, false, false);
 
@@ -95,7 +95,7 @@ bool Midi::init(std::string desired_controller_name) {
                 Midi::midiDisabled = false;
 
                 // Init values
-                Midi::currentVolumeKnob.store(0);
+                //Midi::currentVolumeKnob.store(0);
 
                 return true;
             }
