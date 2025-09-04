@@ -10,6 +10,9 @@
 #include <gui/smgui.h>
 #include <utils/optionlist.h>
 
+// Midi
+extern Midi midi;
+
 #define CONCAT(a, b) ((std::string(a) + b).c_str())
 
 SDRPP_MOD_INFO{
@@ -742,7 +745,11 @@ private:
         if (_this->selectedName != "") {
             SmGui::LeftLabel("LNA Gain");
             SmGui::FillWidth();
-            if (SmGui::SliderInt(CONCAT("##sdrplay_lna_gain", _this->name), &_this->lnaGain, _this->lnaSteps - 1, 0, SmGui::FMT_STR_NONE)) {
+
+
+            bool knob = midi.getRfGain(&_this->lnaGain, 9, 0);
+            bool slider = SmGui::SliderInt(CONCAT("##sdrplay_lna_gain", _this->name), &_this->lnaGain, _this->lnaSteps - 1, 0, SmGui::FMT_STR_NONE);
+            if (knob || slider) {
                 if (_this->running) {
                     _this->channelParams->tunerParams.gain.LNAstate = _this->lnaGain;
                     sdrplay_api_Update(_this->openDev.dev, _this->openDev.tuner, sdrplay_api_Update_Tuner_Gr, sdrplay_api_Update_Ext1_None);
@@ -755,7 +762,11 @@ private:
             if (_this->agc > 0) { SmGui::BeginDisabled(); }
             SmGui::LeftLabel("IF Gain");
             SmGui::FillWidth();
-            if (SmGui::SliderInt(CONCAT("##sdrplay_gain", _this->name), &_this->gain, 59, 20, SmGui::FMT_STR_NONE)) {
+
+            // MIDI
+            knob = midi.getIfGain(&_this->gain, 59, 20);
+            slider = SmGui::SliderInt(CONCAT("##sdrplay_gain", _this->name), &_this->gain, 59, 20, SmGui::FMT_STR_NONE);
+            if (knob || slider) {
                 if (_this->running) {
                     _this->channelParams->tunerParams.gain.gRdB = _this->gain;
                     sdrplay_api_Update(_this->openDev.dev, _this->openDev.tuner, sdrplay_api_Update_Tuner_Gr, sdrplay_api_Update_Ext1_None);
@@ -991,7 +1002,7 @@ private:
             SmGui::Checkbox(CONCAT("MW/FM Notch##sdrplay_rsp2_fmmwnotch", name), &dummy);
             style::endDisabled();
         }
-        
+
         if (SmGui::Checkbox(CONCAT("Bias-T##sdrplay_rsp2_biast", name), &rsp2_biasT)) {
             if (running) {
                 channelParams->rsp2TunerParams.biasTEnable = rsp2_biasT;
