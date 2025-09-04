@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include <atomic>
+//#include <atomic> included in midi.h
 #include "midi.h"
 #include <utils/flog.h>
 

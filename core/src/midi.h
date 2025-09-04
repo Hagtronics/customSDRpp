@@ -1,5 +1,6 @@
 #pragma once
-// #include "rtmidi\RtMidi.h"
+
+#include <atomic>
 #include "RtMidi.h"
 
 /* MIDI Functionality Header */
