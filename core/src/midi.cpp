@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-//#include "rtmidi/RtMidi.h"
+#include <atomic>
 #include "midi.h"
 #include <utils/flog.h>
 
@@ -13,7 +13,7 @@
 static volatile int currentTuneWheel = 1;
 
 // Knob positions = 0 to 127
-static volatile int currentVolumeKnob = 0;
+std::atomic<int> currentVolumeKnob(0);
 static volatile int currentSquelchKnob = 0;
 static volatile int currentRfGainKnob = 0;
 static volatile int currentIfGainKnob = 0;
