@@ -41,32 +41,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
     switch((int)message->at(1))
     {
-        // Knobs
-        case 9: // Zoom
-            currentZoomKnob.store((int)message->at(2));
-            break;
-        case 10: // Volume
-            currentVolumeKnob.store((int)message->at(2));
-            break;
-        case 11: // Squelch
-            currentSquelchKnob.store((int)message->at(2));
-            break;
-        case 12: // RF Gain
-            currentRfGainKnob.store((int)message->at(2));
-            gainChanged.store(true);
-            break;
-        case 13: // IF Gain
-            currentIfGainKnob.store((int)message->at(2));
-            gainChanged.store(true);
-            break;
-        case 14: // Pan H
-            currentPanHKnob.store((int)message->at(2));
-            break;
-        case 15: // Pan L
-            currentPanLKnob.store((int)message->at(2));
-            break;
-
-        // Buttons
+         // Buttons
         case 1:     // Step+
         //case 20:
             int idx = stepIndex.load() + 1;
@@ -100,6 +75,38 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
             flog::info(msg.c_str());
 
             break;
+
+        // Knobs
+        case 9: // Zoom
+            currentZoomKnob.store((int)message->at(2));
+            break;
+
+        case 10: // Volume
+            currentVolumeKnob.store((int)message->at(2));
+            break;
+
+        case 11: // Squelch
+            currentSquelchKnob.store((int)message->at(2));
+            break;
+
+        case 12: // RF Gain
+            currentRfGainKnob.store((int)message->at(2));
+            gainChanged.store(true);
+            break;
+
+        case 13: // IF Gain
+            currentIfGainKnob.store((int)message->at(2));
+            gainChanged.store(true);
+            break;
+
+        case 14: // Pan H
+            currentPanHKnob.store((int)message->at(2));
+            break;
+
+        case 15: // Pan L
+            currentPanLKnob.store((int)message->at(2));
+            break;
+
 
         // Wheel
 
