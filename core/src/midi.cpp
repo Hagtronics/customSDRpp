@@ -42,6 +42,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     switch((int)message->at(1))
     {
         case 1:     // Step+
+        {
             int idx = stepIndex.load();
             idx++;
 
@@ -55,10 +56,11 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
             tuneStep.store(*std::next(steps.begin(), idx));
             stepIndex.store(idx);
 
-            //std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-            //flog::info(msg.c_str());
+            std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+            flog::info(msg.c_str());
 
             break;
+        }
 
         case 2: break;
         case 3: break;
