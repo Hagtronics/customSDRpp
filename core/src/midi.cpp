@@ -23,6 +23,8 @@ static std::atomic<int> currentIfGainKnob = 0;
 static std::atomic<int> currentPanHKnob = 0;
 static std::atomic<int> currentPanLKnob = 0;
 
+static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
+
 // Tune step is in Hz
 static std::atomic<int> currentTuneStep = 1000;
 
@@ -32,12 +34,6 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     //     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
     // if (nBytes > 0)
     //     std::cout << "stamp = " << deltatime << std::endl;
-
-    //flog::info("MIDI CB Called -> MSG -> VAL");
-    //std::string msg = std::to_string((int)message->at(1));
-    //std::string val = std::to_string((int)message->at(2));
-    ///flog::info(msg.c_str());
-    //flog::info(val.c_str());
     std::string val;
 
     switch((int)message->at(1))
@@ -53,9 +49,11 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
             break;
         case 12: // RF Gain
             currentRfGainKnob.store((int)message->at(2));
+            gainChanged.store(true);
             break;
         case 13: // IF Gain
             currentIfGainKnob.store((int)message->at(2));
+            gainChanged.store(true);
             break;
         case 14: // Pan H
             currentPanHKnob.store((int)message->at(2));
@@ -228,6 +226,20 @@ bool Midi::getIfGain(int *scaledValue, int minValue, int maxValue) {
     }
 
     return changed;
+}
+
+/* Check to see if any of the gains changed */
+bool Midi::checkGainChanged() {
+
+    if(Midi::midiDisabled) return false;
+
+    if(gainChanged.load())
+    {
+        gainChanged.store(false);
+        return true;
+    }
+
+    return false;
 }
 
 /* Knob: If true, value is the knob position 0-127 */
