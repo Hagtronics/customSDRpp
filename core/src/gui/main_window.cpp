@@ -343,7 +343,7 @@ void MainWindow::draw() {
         core::configManager.conf["showMenu"] = showMenu;
         core::configManager.release(true);
     }
-    else if (midi.checkGainChanged) {
+    else if (midi.checkGainChanged()) {
         // Force the window open on a MIDI Gain change! So there!!!!
         showMenu = true;
         core::configManager.acquire();
