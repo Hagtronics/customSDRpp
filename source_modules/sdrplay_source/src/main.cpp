@@ -746,9 +746,16 @@ private:
             SmGui::LeftLabel("LNA Gain");
             SmGui::FillWidth();
 
-
+            // MIDI
             bool knob = midi.getRfGain(&_this->lnaGain, 9, 0);
+            std::string msg = "Knob Gain = " + to_string(_this->lnaGain);
+            flog::info(msg.c_str());
+
             bool slider = SmGui::SliderInt(CONCAT("##sdrplay_lna_gain", _this->name), &_this->lnaGain, _this->lnaSteps - 1, 0, SmGui::FMT_STR_NONE);
+            msg = "Slider Gain = " + to_string(_this->lnaGain);
+            flog::info(msg.c_str());
+
+
             if (knob || slider) {
                 if (_this->running) {
                     _this->channelParams->tunerParams.gain.LNAstate = _this->lnaGain;
