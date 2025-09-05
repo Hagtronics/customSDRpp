@@ -44,44 +44,51 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
         case 1:     // Step+
         case 20:
         {
-            int idx = stepIndex.load() + 1;
+            // Only respond to "Note On" or Button Pressed
+            if ((int)message->at(2) == 127)
+            {
+                int idx = stepIndex.load() + 1;
 
-            if (idx < 0) {
-                idx = 0;
+                if (idx < 0) {
+                    idx = 0;
+                }
+
+                if (idx > steps.size()) {
+                    idx = steps.size() - 1;
+                }
+
+                tuneStep.store(*std::next(steps.begin(), idx));
+                stepIndex.store(idx);
+
+                std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                flog::info(msg.c_str());
             }
-
-            if (idx > steps.size()) {
-                idx = steps.size() - 1;
-            }
-
-            tuneStep.store(*std::next(steps.begin(), idx));
-            stepIndex.store(idx);
-
-            std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-            flog::info(msg.c_str());
 
             break;
         }
 
-        case 2:     // Step+
+        case 2:     // Step-
         case 21:
         {
-            int idx = stepIndex.load() - 1;
+            // Only respond to "Note On" or Button Pressed
+            if ((int)message->at(2) == 127)
+            {
+                int idx = stepIndex.load() - 1;
 
-            if (idx < 0) {
-                idx = 0;
+                if (idx < 0) {
+                    idx = 0;
+                }
+
+                if (idx > steps.size()) {
+                    idx = steps.size() - 1;
+                }
+
+                tuneStep.store(*std::next(steps.begin(), idx));
+                stepIndex.store(idx);
+
+                std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                flog::info(msg.c_str());
             }
-
-            if (idx > steps.size()) {
-                idx = steps.size() - 1;
-            }
-
-            tuneStep.store(*std::next(steps.begin(), idx));
-            stepIndex.store(idx);
-
-            std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-            flog::info(msg.c_str());
-
             break;
         }
 
