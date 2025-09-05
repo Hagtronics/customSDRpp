@@ -333,12 +333,19 @@ void MainWindow::draw() {
         core::configManager.release(true);
     }
 
-    // To Bar
+    // Tool Bar
     // ImGui::BeginChild("TopBarChild", ImVec2(0, 49.0f * style::uiScale), false, ImGuiWindowFlags_HorizontalScrollbar);
     ImVec2 btnSize(30 * style::uiScale, 30 * style::uiScale);
     ImGui::PushID(ImGui::GetID("sdrpp_menu_btn"));
     if (ImGui::ImageButton(icons::MENU, btnSize, ImVec2(0, 0), ImVec2(1, 1), 5, ImVec4(0, 0, 0, 0), textCol) || ImGui::IsKeyPressed(ImGuiKey_Menu, false)) {
         showMenu = !showMenu;
+        core::configManager.acquire();
+        core::configManager.conf["showMenu"] = showMenu;
+        core::configManager.release(true);
+    }
+    else if (midi.checkGainChanged) {
+        // Force the window open on a MIDI Gain change! So there!!!!
+        showMenu = true;
         core::configManager.acquire();
         core::configManager.conf["showMenu"] = showMenu;
         core::configManager.release(true);
@@ -630,6 +637,7 @@ void MainWindow::draw() {
     ImGui::NextColumn();
     ImGui::BeginChild("WaterfallControls");
 
+    // Midi - Make the sidebar really narrow, remove the text.
     /* Was,
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x / 2.0) - (ImGui::CalcTextSize("Zoom").x / 2.0));
     ImGui::TextUnformatted("Zoom");
