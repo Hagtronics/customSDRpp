@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <cmath>
+#include <list>
 //#include <atomic> included in midi.h
 #include "midi.h"
 #include <utils/flog.h>
@@ -26,7 +27,9 @@ static std::atomic<int> currentPanLKnob = 0;
 static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
 // Tune step is in Hz
-static std::atomic<int> currentTuneStep = 1000;
+static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e4, 1.0e6};
+static std::atomic<int> stepIndex = 7;
+static std::atomic<int> tuneStep = 1000;
 
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
@@ -38,6 +41,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
     switch((int)message->at(1))
     {
+        // Knobs
         case 9: // Zoom
             currentZoomKnob.store((int)message->at(2));
             break;
@@ -61,6 +65,43 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
         case 15: // Pan L
             currentPanLKnob.store((int)message->at(2));
             break;
+
+        // Buttons
+        case 1:     // Step+
+        case 20:
+            int idx = stepIndex.load() + 1;
+            if (idx < 0) {
+                idx = 0;
+            }
+            if (idx > steps.size()) {
+                idx = steps.size() - 1;
+            }
+            tuneStep.store(*std::next(steps.begin(), idx));
+            stepIndex.store(idx);
+
+            std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+            flog::info(msg.c_str());
+
+            break;
+
+        case 2:     // Step-
+        case 21:
+            int idx = stepIndex.load() - 1;
+            if (idx < 0) {
+                idx = 0;
+            }
+            if (idx > steps.size()) {
+                idx = steps.size() - 1;
+            }
+            tuneStep.store(*std::next(steps.begin(), idx));
+            stepIndex.store(idx);
+
+            std::string msg = "-Step Size = " + std::to_string(tuneStep.load());
+            flog::info(msg.c_str());
+
+            break;
+
+        // Wheel
 
         default:
             break;
