@@ -53,7 +53,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                     idx = 0;
                 }
 
-                if (idx > steps.size()) {
+                if (idx > (steps.size() - 1)) {
                     idx = steps.size() - 1;
                 }
 
@@ -79,7 +79,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                     idx = 0;
                 }
 
-                if (idx > steps.size()) {
+                if (idx > (steps.size() - 1)) {
                     idx = steps.size() - 1;
                 }
 
