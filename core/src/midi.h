@@ -12,8 +12,6 @@ public:
     bool getZoom(float *scaledValue, float scale_min, float scale_max);
     bool getVolume(float *scaledValue, float scale_min, float scale_max);
     bool getSquelch(float *scaledValue, float minValue, float maxValue);
-    bool getRfGain(float *scaledValue, float minValue, float maxValue);
-    bool getIfGain(float *scaledValue, float minValue, float maxValue);
     bool getPanH(float *scaledValue, float minValue, float maxValue);
     bool getPanL(float *scaledValue, float minValue, float maxValue);
     bool getRfGain(int *scaledValue, int minValue, int maxValue);

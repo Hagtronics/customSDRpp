@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <cmath>
 //#include <atomic> included in midi.h
 #include "midi.h"
 #include <utils/flog.h>
@@ -79,8 +80,8 @@ float Midi::scaleKnob(int knobValue, float minValue, float maxValue){
 }
 
 int Midi::scaleKnob(int knobValue, int minValue, int maxValue){
-    float sf = (maxValue - minValue) / 127;
-    return(((int)((float)knobValue * sf)) + minValue );
+    float sf = (float)((maxValue - minValue)) / 127.0f;
+    return(std::round(((float)knobValue * sf) + (float)minValue));
 }
 
 
