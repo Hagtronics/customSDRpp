@@ -27,9 +27,9 @@ static std::atomic<int> currentPanLKnob = 0;
 static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
 // Tune step is in Hz
-static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e4, 1.0e6};
 static std::atomic<int> stepIndex = 7;
-static std::atomic<int> tuneStep = 1000;
+static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e4, 1.0e6};
+static std::atomic<double> tuneStep = 1000.0;
 
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
@@ -68,7 +68,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
         // Buttons
         case 1:     // Step+
-        case 20:
+        //case 20:
             int idx = stepIndex.load() + 1;
             if (idx < 0) {
                 idx = 0;
@@ -85,7 +85,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
             break;
 
         case 2:     // Step-
-        case 21:
+        //case 21:
             int idx = stepIndex.load() - 1;
             if (idx < 0) {
                 idx = 0;
