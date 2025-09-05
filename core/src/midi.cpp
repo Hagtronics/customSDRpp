@@ -41,13 +41,14 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
     switch((int)message->at(1))
     {
-         // Buttons
         case 1:     // Step+
             int idx = stepIndex.load();
             idx++;
+
             if (idx < 0) {
                 idx = 0;
             }
+
             if (idx > steps.size()) {
                 idx = steps.size() - 1;
             }
@@ -59,26 +60,14 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
             break;
 
-        /*
-        case 2:     // Step-
-            int idx = stepIndex.load();
-            idx--;
-            if (idx < 0) {
-                idx = 0;
-            }
-            if (idx > steps.size()) {
-                idx = steps.size() - 1;
-            }
-            tuneStep.store(*std::next(steps.begin(), idx));
-            stepIndex.store(idx);
+        case 2: break;
+        case 3: break;
+        case 4: break;
+        case 5: break;
+        case 6: break;
+        case 7: break;
+        case 8: break;
 
-            //std::string msg = "-Step Size = " + std::to_string(tuneStep.load());
-            //flog::info(msg.c_str());
-
-            break;
-        */
-
-        // Knobs
         case 9: // Zoom
             currentZoomKnob.store((int)message->at(2));
             break;
