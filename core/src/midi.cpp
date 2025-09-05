@@ -43,7 +43,6 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     {
          // Buttons
         case 1:     // Step+
-        //case 20:
             int idx = stepIndex.load();
             idx++;
             if (idx < 0) {
@@ -62,7 +61,6 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
         /*
         case 2:     // Step-
-        //case 21:
             int idx = stepIndex.load();
             idx--;
             if (idx < 0) {
