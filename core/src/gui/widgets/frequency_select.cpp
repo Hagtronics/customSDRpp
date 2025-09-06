@@ -114,7 +114,8 @@ void FrequencySelect::draw() {
     float textOffset = 11.0f * style::uiScale;
     bool zeros = true;
 
-    ImGui::ItemSize(ImRect(digitTopMins[0], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
+    //ImGui::ItemSize(ImRect(digitTopMins[0], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
+    ImGui::ItemSize(ImRect(digitTopMins[2], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
 
     // HACK Remove 10 and 100 GHz digits to make room for Step Display
     // Was 'int i=0'... is i=2
@@ -199,7 +200,8 @@ void FrequencySelect::draw() {
         }
         digitHovered = hovered;
 
-        if (isInArea(mousePos, digitTopMins[0], digitBottomMaxs[11])) {
+        // if (isInArea(mousePos, digitTopMins[0], digitBottomMaxs[11])) {
+        if (isInArea(mousePos, digitTopMins[2], digitBottomMaxs[11])) {
             bool shortcutKey = io.ConfigMacOSXBehaviors ? (io.KeyMods == ImGuiKeyModFlags_Super) : (io.KeyMods == ImGuiKeyModFlags_Ctrl);
             bool ctrlOnly = (io.KeyMods == ImGuiKeyModFlags_Ctrl);
             bool shiftOnly = (io.KeyMods == ImGuiKeyModFlags_Shift);
