@@ -116,9 +116,9 @@ void FrequencySelect::draw() {
 
     ImGui::ItemSize(ImRect(digitTopMins[0], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
 
-    // Was 'i < 12' now 10 digits
     // HACK
-    for (int i = 0; i < 10; i++) {
+    // Was 'int i=0'... is i=2
+    for (int i = 2; i < 12; i++) {
         if (digits[i] != 0) {
             zeros = false;
         }
