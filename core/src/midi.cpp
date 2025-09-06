@@ -246,8 +246,8 @@ double Midi::getTuneStep() {
     return tuneStep.load();
 }
 
-/* Wheel: If true, value contains the new frequency */
-bool Midi::getTuneWheel(double *frequency) {
+/* Wheel: If true, value contains the new frequency delta to be added to current frequency */
+bool Midi::getTuneWheel(double *frequencyDelta) {
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
@@ -255,7 +255,7 @@ bool Midi::getTuneWheel(double *frequency) {
     double freqDelta = tuneFreqChangedBy.load();
     if(freqDelta > 0.5 || freqDelta < 0.5)
     {
-        *frequency = *frequency + freqDelta;
+        *frequencyDelta = freqDelta;
         tuneFreqChangedBy.store(0.0);
         changed = true;
     }
