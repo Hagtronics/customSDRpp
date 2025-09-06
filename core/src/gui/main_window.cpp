@@ -634,12 +634,13 @@ void MainWindow::draw() {
         }
 
         // Handle Midi Wheel Tuning Change
-        bool midiFreqChanged = midi.getTuneWheel(&gui::waterfall.getCenterFrequency());
+        double freqDelta = 0.0;
+        bool midiFreqChanged = midi.getTuneWheel(&freqDelta);
 
         if (vfo != NULL && midiFreqChanged) {
             bool freqChanged = false;
-            double nfreq = gui::waterfall.getCenterFrequency() + vfo->generalOffset - vfo->snapInterval;
-            nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
+            double nfreq = gui::waterfall.getCenterFrequency()+ vfo->generalOffset + freqDelta;
+            //nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
             tuner::tune(tuningMode, gui::waterfall.selectedVFO, nfreq);
             freqChanged = true;
         }
