@@ -260,8 +260,8 @@ bool Midi::getTuneWheel(double *frequencyDelta) {
         changed = true;
     }
 
-    std::string msg = "Freq Changed By = " + std::to_string(freqDelta);
-    flog::info(msg.c_str());
+    //std::string msg = "Freq Changed By = " + std::to_string(freqDelta);
+    //flog::info(msg.c_str());
 
     // Finally clear flags and values to reset the control.
     return changed;
