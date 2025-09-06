@@ -632,6 +632,27 @@ void MainWindow::draw() {
             }
             core::configManager.release(true);
         }
+
+        // Handle Midi Wheel Tuning Change
+        bool midiFreqChanged = midi.getTuneWheel(&gui::waterfall.getCenterFrequency());
+
+        if (vfo != NULL && midiFreqChanged) {
+            bool freqChanged = false;
+            double nfreq = gui::waterfall.getCenterFrequency() + vfo->generalOffset - vfo->snapInterval;
+            nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
+            tuner::tune(tuningMode, gui::waterfall.selectedVFO, nfreq);
+            freqChanged = true;
+        }
+
+        if (freqChanged) {
+            core::configManager.acquire();
+            core::configManager.conf["frequency"] = gui::waterfall.getCenterFrequency();
+            if (vfo != NULL) {
+                core::configManager.conf["vfoOffsets"][gui::waterfall.selectedVFO] = vfo->generalOffset;
+            }
+            core::configManager.release(true);
+        }
+
     }
 
     ImGui::NextColumn();
