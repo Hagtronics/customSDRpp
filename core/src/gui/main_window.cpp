@@ -385,8 +385,10 @@ void MainWindow::draw() {
 
     ImGui::SameLine();
 
-    // Display tuning step
+    // HACK - Display tuning step
+    float posx = ImGui::GetCursorPosX();
     ImGui::Text(getTuneStepText().c_str());
+    ImGui::SetCursorPosX(posx + 10.0);
     ImGui::SameLine();
 
     ImGui::SetCursorPosY(origY);
@@ -779,11 +781,11 @@ std::string MainWindow::getTuneStepText() {
     double step = midi.getTuneStep();
 
     if(step < 1e3){
-        stepStr = std::to_string((int)step);
+        stepStr = std::to_string((int)step) + 'Hz';
     } else if (step < 1e6) {
-        stepStr = std::to_string((int)(step/1e3)) + 'k';
+        stepStr = std::to_string((int)(step/1e3)) + 'kHz';
     } else {
-        stepStr = std::to_string((int)(step/1e6)) + 'M';
+        stepStr = std::to_string((int)(step/1e6)) + 'MHz';
     }
 
     return stepStr;
