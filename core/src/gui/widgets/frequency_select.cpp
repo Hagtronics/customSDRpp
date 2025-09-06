@@ -116,7 +116,7 @@ void FrequencySelect::draw() {
 
     ImGui::ItemSize(ImRect(digitTopMins[0], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
 
-    // HACK
+    // HACK Remove 10 and 100 GHz digits to make room for Step Display
     // Was 'int i=0'... is i=2
     for (int i = 2; i < 12; i++) {
         if (digits[i] != 0) {
