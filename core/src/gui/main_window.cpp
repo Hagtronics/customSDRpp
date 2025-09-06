@@ -654,6 +654,8 @@ void MainWindow::draw() {
                 core::configManager.conf["vfoOffsets"][gui::waterfall.selectedVFO] = vfo->generalOffset;
             }
             core::configManager.release(true);
+
+            flog::info("Tuning changed");
         }
 
     }
