@@ -241,9 +241,13 @@ bool Midi::init(std::string desired_controller_name) {
     return false;
 }
 
+/* Returns the current tuning step size */
+double Midi::getTuneStep() {
+    return tuneStep.load();
+}
 
 /* Wheel: If true, value contains the new frequency */
-bool Midi::getTune(double *frequency) {
+bool Midi::getTuneWheel(double *frequency) {
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
