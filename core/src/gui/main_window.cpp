@@ -388,8 +388,8 @@ void MainWindow::draw() {
     // HACK - Display tuning step
     float posx = ImGui::GetCursorPosX();
     ImGui::Text(getTuneStepText().c_str());
-    ImGui::SetCursorPosX(posx + 10.0);
     ImGui::SameLine();
+    ImGui::SetCursorPosX(posx + 0.0);
     ImGui::SetCursorPosY(origY);
 
     gui::freqSelect.draw();
@@ -654,10 +654,7 @@ void MainWindow::draw() {
                 core::configManager.conf["vfoOffsets"][gui::waterfall.selectedVFO] = vfo->generalOffset;
             }
             core::configManager.release(true);
-
-            flog::info("Tuning changed");
         }
-
     }
 
     ImGui::NextColumn();
