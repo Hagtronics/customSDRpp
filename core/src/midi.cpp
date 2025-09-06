@@ -28,7 +28,7 @@ static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
 // Tune step is in Hz
 static std::atomic<int> stepIndex = 7;
-static std::list<double> steps = {1.0, 10.0, 50.0, 100.0, 500.0, 1.0e3, 1.0e4, 1.0e5, 1.0e6};
+static std::list<double> steps = {1.0, 10.0, 50.0, 100.0, 500.0, 1.0e3, 1.0e4, 1.0e5, 1.0e6, 1.0e7};
 static std::atomic<double> tuneStep = 1000.0;
 static std::atomic<double> tuneFreqChangedBy = 0.0;
 
