@@ -774,7 +774,7 @@ void MainWindow::setFirstMenuRender() {
     firstMenuRender = true;
 }
 
-std::string getTuneStepText() {
+std::string MainWindow::getTuneStepText() {
     std::string stepStr;
     double step = midi.getTuneStep();
 
