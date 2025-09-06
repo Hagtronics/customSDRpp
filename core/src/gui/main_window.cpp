@@ -386,11 +386,11 @@ void MainWindow::draw() {
     ImGui::SameLine();
 
     // HACK - Display tuning step
-    //float posx = ImGui::GetCursorPosX();
-    //ImGui::Text(getTuneStepText().c_str());
-    //ImGui::SetCursorPosX(posx + 10.0);
-    //ImGui::SameLine();
-    //ImGui::SetCursorPosY(origY);
+    float posx = ImGui::GetCursorPosX();
+    ImGui::Text(getTuneStepText().c_str());
+    ImGui::SetCursorPosX(posx + 10.0);
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(origY);
 
     gui::freqSelect.draw();
 
