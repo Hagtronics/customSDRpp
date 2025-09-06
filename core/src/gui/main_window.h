@@ -22,6 +22,8 @@ public:
     bool sdrIsRunning();
     void setFirstMenuRender();
 
+    std::string getTuneStepText();
+
     static float* acquireFFTBuffer(void* ctx);
     static void releaseFFTBuffer(void* ctx);
 
