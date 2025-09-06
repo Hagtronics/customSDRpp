@@ -781,11 +781,11 @@ std::string MainWindow::getTuneStepText() {
     double step = midi.getTuneStep();
 
     if(step < 1e3){
-        stepStr = std::to_string((int)step) + 'Hz';
+        stepStr = std::to_string((int)step) + "Hz";
     } else if (step < 1e6) {
-        stepStr = std::to_string((int)(step/1e3)) + 'kHz';
+        stepStr = std::to_string((int)(step/1e3)) + "kHz";
     } else {
-        stepStr = std::to_string((int)(step/1e6)) + 'MHz';
+        stepStr = std::to_string((int)(step/1e6)) + "MHz";
     }
 
     return stepStr;
