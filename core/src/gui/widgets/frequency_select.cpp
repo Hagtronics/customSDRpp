@@ -108,7 +108,7 @@ void FrequencySelect::draw() {
     ImU32 disabledColor = ImGui::GetColorU32(ImGuiCol_Text, 0.3f);
     ImU32 textColor = ImGui::GetColorU32(ImGuiCol_Text);
 
-    
+
     int digitWidth = digitSz.x;
     int commaOffset = 0;
     float textOffset = 11.0f * style::uiScale;
@@ -116,7 +116,9 @@ void FrequencySelect::draw() {
 
     ImGui::ItemSize(ImRect(digitTopMins[0], ImVec2(digitBottomMaxs[11].x + 15, digitBottomMaxs[11].y)));
 
-    for (int i = 0; i < 12; i++) {
+    // Was 'i < 12' now 10 digits
+    // HACK
+    for (int i = 0; i < 10; i++) {
         if (digits[i] != 0) {
             zeros = false;
         }
