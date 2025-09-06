@@ -28,7 +28,7 @@ static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
 // Tune step is in Hz
 static std::atomic<int> stepIndex = 7;
-static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e5, 1.0e6};
+static std::list<double> steps = {1.0, 10.0, 50.0, 100.0, 500.0, 1.0e3, 1.0e4, 1.0e5, 1.0e6};
 static std::atomic<double> tuneStep = 1000.0;
 static std::atomic<double> tuneFreqChangedBy = 0.0;
 
@@ -68,8 +68,8 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                         tuneStep.store(*std::next(steps.begin(), idx));
                         stepIndex.store(idx);
 
-                        std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-                        flog::info(msg.c_str());
+                        //std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                        //flog::info(msg.c_str());
                     }
                     break;
                 }
@@ -93,8 +93,8 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                         tuneStep.store(*std::next(steps.begin(), idx));
                         stepIndex.store(idx);
 
-                        std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-                        flog::info(msg.c_str());
+                        //std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                        //flog::info(msg.c_str());
                     }
                     break;
                 }
@@ -116,10 +116,10 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                     switch((int)message->at(2))
                     {
                         case 43: // ---
-                            tuneFreqChangedBy.store(tuneStep.load() * -5.0);
+                            tuneFreqChangedBy.store(tuneStep.load() * -10.0);
                             break;
                         case 53: // --
-                            tuneFreqChangedBy.store(tuneStep.load() * -2.0);
+                            tuneFreqChangedBy.store(tuneStep.load() * -5.0);
                             break;
                         case 63: // -
                             tuneFreqChangedBy.store(tuneStep.load() * -1.0);
@@ -128,10 +128,10 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                             tuneFreqChangedBy.store(tuneStep.load() * 1.0);
                             break;
                         case 75: // ++
-                            tuneFreqChangedBy.store(tuneStep.load() * 2.0);
+                            tuneFreqChangedBy.store(tuneStep.load() * 5.0);
                             break;
                         case 85: // +++
-                            tuneFreqChangedBy.store(tuneStep.load() * 5.0);
+                            tuneFreqChangedBy.store(tuneStep.load() * 10.0);
                             break;
                         default:
                             break;
@@ -260,8 +260,8 @@ bool Midi::getTuneWheel(double *frequencyDelta) {
         changed = true;
     }
 
-    std::string msg = "Freq Changed By = " + std::to_string(freqDelta);
-    flog::info(msg.c_str());
+    //std::string msg = "Freq Changed By = " + std::to_string(freqDelta);
+    //flog::info(msg.c_str());
 
     // Finally clear flags and values to reset the control.
     return changed;
