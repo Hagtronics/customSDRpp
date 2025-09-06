@@ -641,9 +641,7 @@ void MainWindow::draw() {
             double nfreq = gui::waterfall.getCenterFrequency()+ vfo->generalOffset + freqDelta;
             //nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
             tuner::tune(tuningMode, gui::waterfall.selectedVFO, nfreq);
-            freqChanged = true;
 
-        if (freqChanged) {
             core::configManager.acquire();
             core::configManager.conf["frequency"] = gui::waterfall.getCenterFrequency();
             if (vfo != NULL) {
