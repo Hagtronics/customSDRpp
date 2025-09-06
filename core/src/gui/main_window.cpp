@@ -638,12 +638,10 @@ void MainWindow::draw() {
         bool midiFreqChanged = midi.getTuneWheel(&freqDelta);
 
         if (vfo != NULL && midiFreqChanged) {
-            bool freqChanged = false;
             double nfreq = gui::waterfall.getCenterFrequency()+ vfo->generalOffset + freqDelta;
             //nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
             tuner::tune(tuningMode, gui::waterfall.selectedVFO, nfreq);
             freqChanged = true;
-        }
 
         if (freqChanged) {
             core::configManager.acquire();
