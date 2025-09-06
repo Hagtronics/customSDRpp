@@ -385,6 +385,10 @@ void MainWindow::draw() {
 
     ImGui::SameLine();
 
+    // Display tuning step
+    ImGui::Text(getTuneStepText().c_str());
+    ImGui::SameLine();
+
     ImGui::SetCursorPosY(origY);
     gui::freqSelect.draw();
 
@@ -768,4 +772,19 @@ bool MainWindow::isPlaying() {
 
 void MainWindow::setFirstMenuRender() {
     firstMenuRender = true;
+}
+
+std::string getTuneStepText() {
+    std::string stepStr;
+    double step = midi.getTuneStep();
+
+    if(step < 1e3){
+        stepStr = std::to_string((int)step);
+    } else if (step < 1e6) {
+        stepStr = std::to_string((int)(step/1e3)) + 'k';
+    } else {
+        stepStr = std::to_string((int)(step/1e6)) + 'M';
+    }
+
+    return stepStr;
 }
