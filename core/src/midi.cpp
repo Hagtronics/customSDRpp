@@ -253,7 +253,7 @@ bool Midi::getTuneWheel(double *frequencyDelta) {
     if(Midi::midiDisabled) return false;
 
     double freqDelta = tuneFreqChangedBy.load();
-    if(freqDelta > 0.5 || freqDelta < 0.5)
+    if(std::abs(freqDelta) > 0.5)
     {
         *frequencyDelta = freqDelta;
         tuneFreqChangedBy.store(0.0);
