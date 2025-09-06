@@ -640,7 +640,6 @@ private:
             sdrplay_api_Update(_this->openDev.dev, _this->openDev.tuner, sdrplay_api_Update_Tuner_Frf, sdrplay_api_Update_Ext1_None);
         }
         _this->freq = freq;
-        flog::info("SDRPlaySourceModule '{0}': Tune: {1}!", _this->name, freq);
     }
 
     static void menuHandler(void* ctx) {
