@@ -8,7 +8,7 @@
 class Midi {
 public:
     bool init(std::string desired_controller_name);
-    bool getTune(float *value);
+    bool getTune(double *value);
     bool getZoom(float *scaledValue, float scale_min, float scale_max);
     bool getVolume(float *scaledValue, float scale_min, float scale_max);
     bool getSquelch(float *scaledValue, float minValue, float maxValue);

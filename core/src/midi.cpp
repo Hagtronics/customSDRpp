@@ -28,9 +28,12 @@ static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
 // Tune step is in Hz
 static std::atomic<int> stepIndex = 7;
-static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e4, 1.0e6};
+static std::list<double> steps = {1.0, 10.0, 25.0, 50.0, 100.0, 250.0, 500.0, 1.0e3, 5.0e3, 6.25e3, 9.0e3, 1.0e4, 1.25e4, 1.0e5, 2.5e5, 5.0e5, 1.0e6};
 static std::atomic<double> tuneStep = 1000.0;
+static std::atomic<double> tuneFreqChangedBy = 0.0;
 
+
+// RtMidi Callback
 void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*userData*/) {
     unsigned int nBytes = message->size();
     // for (unsigned int i = 0; i < nBytes; i++)
@@ -39,97 +42,145 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
     //     std::cout << "stamp = " << deltatime << std::endl;
     std::string val;
 
-    switch((int)message->at(1))
+    switch((int)message->at(0))
     {
-        case 1:     // Step+
-        case 20:
+        case 144: // Notes
         {
-            // Only respond to "Note On" or Button Pressed
-            if ((int)message->at(2) == 127)
+            switch((int)message->at(1))
             {
-                int idx = stepIndex.load() + 1;
+                // Buttons
+                case 1:     // Step+
+                case 20:
+                {
+                    // Only respond to "Note On" or Button Pressed
+                    if ((int)message->at(2) == 127)
+                    {
+                        int idx = stepIndex.load() + 1;
 
-                if (idx < 0) {
-                    idx = 0;
+                        if (idx < 0) {
+                            idx = 0;
+                        }
+
+                        if (idx > (steps.size() - 1)) {
+                            idx = steps.size() - 1;
+                        }
+
+                        tuneStep.store(*std::next(steps.begin(), idx));
+                        stepIndex.store(idx);
+
+                        std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                        flog::info(msg.c_str());
+                    }
+                    break;
                 }
 
-                if (idx > (steps.size() - 1)) {
-                    idx = steps.size() - 1;
+                case 2:     // Step-
+                case 21:
+                {
+                    // Only respond to "Note On" or Button Pressed
+                    if ((int)message->at(2) == 127)
+                    {
+                        int idx = stepIndex.load() - 1;
+
+                        if (idx < 0) {
+                            idx = 0;
+                        }
+
+                        if (idx > (steps.size() - 1)) {
+                            idx = steps.size() - 1;
+                        }
+
+                        tuneStep.store(*std::next(steps.begin(), idx));
+                        stepIndex.store(idx);
+
+                        std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
+                        flog::info(msg.c_str());
+                    }
+                    break;
                 }
 
-                tuneStep.store(*std::next(steps.begin(), idx));
-                stepIndex.store(idx);
-
-                std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-                flog::info(msg.c_str());
+                default:
+                    break;
             }
-
             break;
         }
 
-        case 2:     // Step-
-        case 21:
+        case 176: // Knobs and wheels
         {
-            // Only respond to "Note On" or Button Pressed
-            if ((int)message->at(2) == 127)
+
+            switch((int)message->at(1))
             {
-                int idx = stepIndex.load() - 1;
-
-                if (idx < 0) {
-                    idx = 0;
+                // Case Tune Wheel
+                case 1:
+                {
+                    switch((int)message->at(2))
+                    {
+                        case 43: // ---
+                            tuneFreqChangedBy.store(tuneStep.load() * -5.0);
+                            break;
+                        case 53: // --
+                            tuneFreqChangedBy.store(tuneStep.load() * -2.0);
+                            break;
+                        case 63: // -
+                            tuneFreqChangedBy.store(tuneStep.load() * -1.0);
+                            break;
+                        case 65: // +
+                            tuneFreqChangedBy.store(tuneStep.load() * 1.0);
+                            break;
+                        case 75: // ++
+                            tuneFreqChangedBy.store(tuneStep.load() * 2.0);
+                            break;
+                        case 85: // +++
+                            tuneFreqChangedBy.store(tuneStep.load() * 5.0);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 }
 
-                if (idx > (steps.size() - 1)) {
-                    idx = steps.size() - 1;
-                }
 
-                tuneStep.store(*std::next(steps.begin(), idx));
-                stepIndex.store(idx);
 
-                std::string msg = "+Step Size = " + std::to_string(tuneStep.load());
-                flog::info(msg.c_str());
+                // Knobs
+                case 9: // Zoom
+                    currentZoomKnob.store((int)message->at(2));
+                    break;
+
+                case 10: // Volume
+                    currentVolumeKnob.store((int)message->at(2));
+                    break;
+
+                case 11: // Squelch
+                    currentSquelchKnob.store((int)message->at(2));
+                    break;
+
+                case 12: // RF Gain
+                    currentRfGainKnob.store((int)message->at(2));
+                    gainChanged.store(true);
+                    break;
+
+                case 13: // IF Gain
+                    currentIfGainKnob.store((int)message->at(2));
+                    gainChanged.store(true);
+                    break;
+
+                case 14: // Pan H
+                    currentPanHKnob.store((int)message->at(2));
+                    break;
+
+                case 15: // Pan L
+                    currentPanLKnob.store((int)message->at(2));
+                    break;
+
+                default:
+                    break;
             }
             break;
         }
-
-        case 9: // Zoom
-            currentZoomKnob.store((int)message->at(2));
-            break;
-
-        case 10: // Volume
-            currentVolumeKnob.store((int)message->at(2));
-            break;
-
-        case 11: // Squelch
-            currentSquelchKnob.store((int)message->at(2));
-            break;
-
-        case 12: // RF Gain
-            currentRfGainKnob.store((int)message->at(2));
-            gainChanged.store(true);
-            break;
-
-        case 13: // IF Gain
-            currentIfGainKnob.store((int)message->at(2));
-            gainChanged.store(true);
-            break;
-
-        case 14: // Pan H
-            currentPanHKnob.store((int)message->at(2));
-            break;
-
-        case 15: // Pan L
-            currentPanLKnob.store((int)message->at(2));
-            break;
-
-
-        // Wheel
 
         default:
             break;
-
     }
-
 }
 
 
@@ -191,15 +242,27 @@ bool Midi::init(std::string desired_controller_name) {
 }
 
 
-/* Wheel: If true, value contains the number of tune steps to take. */
-bool Midi::getTune(float *value) {
+/* Wheel: If true, value contains the new frequency */
+bool Midi::getTune(double *frequency) {
     bool changed = false;
 
     if(Midi::midiDisabled) return false;
 
+    double freqDelta = tuneFreqChangedBy.load();
+    if(freqDelta > 0.5 || freqDelta < 0.5)
+    {
+        *frequency = *frequency + freqDelta;
+        tuneFreqChangedBy.store(0.0);
+        changed = true;
+    }
+
+    std::string msg = "Freq Changed By = " + std::to_string(freqDelta);
+    flog::info(msg.c_str());
+
     // Finally clear flags and values to reset the control.
     return changed;
 }
+
 
 /* Knob: If true, value is the knob position 0-127 */
 bool Midi::getZoom(float *scaledValue, float minValue, float maxValue) {
