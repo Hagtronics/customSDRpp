@@ -646,6 +646,11 @@ void MainWindow::draw() {
         if (vfo != NULL && midiFreqChanged) {
             double nfreq = gui::waterfall.getCenterFrequency()+ vfo->generalOffset + freqDelta;
             //nfreq = roundl(nfreq / vfo->snapInterval) * vfo->snapInterval;
+
+            // Bound the frequency to RSP1B
+            if(nfreq > 2e9) nfreq = 2e9;
+            if(nfreq < 1e3) nfreq = 1e3;
+
             tuner::tune(tuningMode, gui::waterfall.selectedVFO, nfreq);
 
             core::configManager.acquire();
