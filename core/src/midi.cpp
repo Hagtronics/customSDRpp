@@ -23,6 +23,7 @@ static std::atomic<int> currentRfGainKnob = 0;
 static std::atomic<int> currentIfGainKnob = 0;
 static std::atomic<int> currentPanHKnob = 0;
 static std::atomic<int> currentPanLKnob = 0;
+static std::atomic<int> currentBandwidthKnob = 0;
 
 static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
 
@@ -50,7 +51,6 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
             {
                 // Buttons
                 case 1:     // Step+
-                case 20:
                 {
                     // Only respond to "Note On" or Button Pressed
                     if ((int)message->at(2) == 127)
@@ -75,7 +75,6 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                 }
 
                 case 2:     // Step-
-                case 21:
                 {
                     // Only respond to "Note On" or Button Pressed
                     if ((int)message->at(2) == 127)
@@ -170,6 +169,10 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
                 case 15: // Pan L
                     currentPanLKnob.store((int)message->at(2));
+                    break;
+
+                case 16: // Pan L
+                    currentBandwidthKnob.store((int)message->at(2));
                     break;
 
                 default:
@@ -402,6 +405,24 @@ bool Midi::getPanL(float *scaledValue, float minValue, float maxValue) {
     if(lastPanLKnob != current){
         *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
         lastPanLKnob = current;
+        changed = true;
+    }
+
+    return changed;
+}
+
+// Bandwidth Float Input
+bool Midi::getBandwidth(float *scaledValue, float minValue, float maxValue){
+    static int lastBandwidthKnob = 0;
+    bool changed = false;
+
+    if(Midi::midiDisabled) return false;
+
+    int current = currentBandwidthKnob.load();
+
+    if(lastBandwidthKnob != current){
+        *scaledValue = Midi::scaleKnob(current, minValue, maxValue);
+        lastBandwidthKnob = current;
         changed = true;
     }
 

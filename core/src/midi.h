@@ -16,6 +16,7 @@ public:
     bool getPanL(float *scaledValue, float minValue, float maxValue);
     bool getRfGain(int *scaledValue, int minValue, int maxValue);
     bool getIfGain(int *scaledValue, int minValue, int maxValue);
+    bool getBandwidth(float *scaledValue, float minValue, float maxValue);
     bool checkGainChanged();
     bool getStepPlus();
     bool getStepMinus();
