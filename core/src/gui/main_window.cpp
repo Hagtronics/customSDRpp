@@ -373,6 +373,9 @@ void MainWindow::draw() {
     }
     if (playButtonLocked && !tmpPlaySate) { style::endDisabled(); }
 
+    // Hack - Always start
+    autostart = true;
+
     // Handle auto-start
     if (autostart) {
         autostart = false;
