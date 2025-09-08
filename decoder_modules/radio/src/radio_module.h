@@ -17,6 +17,9 @@
 #include "radio_interface.h"
 #include "demod.h"
 
+// Midi
+extern Midi midi;
+
 ConfigManager config;
 
 #define CONCAT(a, b) ((std::string(a) + b).c_str())
@@ -204,10 +207,22 @@ private:
 
         ImGui::EndGroup();
 
+        // MIDI Change. was,
+        // if (!_this->bandwidthLocked) {
+        //     ImGui::LeftLabel("Bandwidth");
+        //     ImGui::SetNextItemWidth(menuWidth - ImGui::GetCursorPosX());
+        //     if (ImGui::InputFloat(("##_radio_bw_" + _this->name).c_str(), &_this->bandwidth, 1, 100, "%.0f")) {
+        //         _this->bandwidth = std::clamp<float>(_this->bandwidth, _this->minBandwidth, _this->maxBandwidth);
+        //         _this->setBandwidth(_this->bandwidth);
+        //     }
+
+        // Is,
         if (!_this->bandwidthLocked) {
             ImGui::LeftLabel("Bandwidth");
             ImGui::SetNextItemWidth(menuWidth - ImGui::GetCursorPosX());
-            if (ImGui::InputFloat(("##_radio_bw_" + _this->name).c_str(), &_this->bandwidth, 1, 100, "%.0f")) {
+            bool bwChanged = ImGui::InputFloat(("##_radio_bw_" + _this->name).c_str(), &_this->bandwidth, 1, 100, "%.0f");
+            bool knobChanged = midi.getBandwidth(&_this->bandwidth, _this->minBandwidth, _this->maxBandwidth);
+            if (bwChanged || knobChanged) {
                 _this->bandwidth = std::clamp<float>(_this->bandwidth, _this->minBandwidth, _this->maxBandwidth);
                 _this->setBandwidth(_this->bandwidth);
             }
@@ -246,7 +261,7 @@ private:
             }
             if (!_this->nbEnabled && _this->enabled) { style::endDisabled(); }
         }
-        
+
 
         // Squelch
         if (ImGui::Checkbox(("Squelch##_radio_sqelch_ena_" + _this->name).c_str(), &_this->squelchEnabled)) {
