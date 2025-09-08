@@ -18,6 +18,8 @@ public:
     bool getIfGain(int *scaledValue, int minValue, int maxValue);
     bool getBandwidth(float *scaledValue, float minValue, float maxValue);
     bool checkGainChanged();
+    bool checkBandwidthChanged();
+    bool checkSquelchChanged();
     bool getStepPlus();
     bool getStepMinus();
     double getTuneStep();

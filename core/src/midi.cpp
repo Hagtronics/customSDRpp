@@ -26,6 +26,8 @@ static std::atomic<int> currentPanLKnob = 0;
 static std::atomic<int> currentBandwidthKnob = 0;
 
 static std::atomic<bool> gainChanged = false;  // Used to signal main_window.cpp
+static std::atomic<bool> bandwidthChanged = false;  // Used to signal main_window.cpp
+static std::atomic<bool> squelchChanged = false;
 
 // Tune step is in Hz
 static std::atomic<int> stepIndex = 7;
@@ -151,6 +153,7 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
 
                 case 11: // Squelch
                     currentSquelchKnob.store((int)message->at(2));
+                    squelchChanged.store(true);
                     break;
 
                 case 12: // RF Gain
@@ -171,8 +174,9 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                     currentPanLKnob.store((int)message->at(2));
                     break;
 
-                case 16: // Pan L
+                case 16: // Bandwidth
                     currentBandwidthKnob.store((int)message->at(2));
+                    bandwidthChanged.store(true);
                     break;
 
                 default:
@@ -325,6 +329,20 @@ bool Midi::getSquelch(float *scaledValue, float minValue, float maxValue) {
     return changed;
 }
 
+/* Check to see if the Squelch changed */
+bool Midi::checkSquelchChanged() {
+
+    if(Midi::midiDisabled) return false;
+
+    if(squelchChanged.load())
+    {
+        squelchChanged.store(false);
+        return true;
+    }
+
+    return false;
+}
+
 /* Knob: If true, value is the knob position 0-127 */
 bool Midi::getRfGain(int *scaledValue, int minValue, int maxValue) {
     static int lastRfGainKnob = 0;
@@ -427,6 +445,20 @@ bool Midi::getBandwidth(float *scaledValue, float minValue, float maxValue){
     }
 
     return changed;
+}
+
+/* Check to see if the Bandwidth changed */
+bool Midi::checkBandwidthChanged() {
+
+    if(Midi::midiDisabled) return false;
+
+    if(bandwidthChanged.load())
+    {
+        bandwidthChanged.store(false);
+        return true;
+    }
+
+    return false;
 }
 
 /* Button: If true, button was pressed */
