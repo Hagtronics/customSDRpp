@@ -262,7 +262,7 @@ private:
             if (!_this->nbEnabled && _this->enabled) { style::endDisabled(); }
         }
 
-
+        /* Was,
         // Squelch
         if (ImGui::Checkbox(("Squelch##_radio_sqelch_ena_" + _this->name).c_str(), &_this->squelchEnabled)) {
             _this->setSquelchEnabled(_this->squelchEnabled);
@@ -274,6 +274,34 @@ private:
             _this->setSquelchLevel(_this->squelchLevel);
         }
         if (!_this->squelchEnabled && _this->enabled) { style::endDisabled(); }
+        */
+
+        /* MIDI Is, */
+        // Squelch
+
+        // If squelch > minimum level, enable,
+        // if( std::abs(_this->squelchLevel) > std::abs(_this->MIN_SQUELCH)) {
+        //     _this->squelchEnabled = true;
+        // }
+        // else {
+        //     _this->squelchEnabled = false;
+        // }
+
+
+        if (ImGui::Checkbox(("Squelch##_radio_sqelch_ena_" + _this->name).c_str(), &_this->squelchEnabled)) {
+            _this->setSquelchEnabled(_this->squelchEnabled);
+        }
+        if (!_this->squelchEnabled && _this->enabled) { style::beginDisabled(); }
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(menuWidth - ImGui::GetCursorPosX());
+
+        bool sliderChanged = ImGui::SliderFloat(("##_radio_sqelch_lvl_" + _this->name).c_str(), &_this->squelchLevel, _this->MIN_SQUELCH, _this->MAX_SQUELCH, "%.3fdB");
+        bool knobChanged = midi.getSquelch(&_this->squelchLevel, _this->MIN_SQUELCH, _this->MAX_SQUELCH);
+        if (sliderChanged || knobChanged) {
+            _this->setSquelchLevel(_this->squelchLevel);
+        }
+        if (!_this->squelchEnabled && _this->enabled) { style::endDisabled(); }
+
 
         // FM IF Noise Reduction
         if (_this->FMIFNRAllowed) {
