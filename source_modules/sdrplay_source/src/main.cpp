@@ -388,8 +388,10 @@ public:
             if (config.conf["devices"][selectedName].contains("dabNotch")) {
                 rsp1a_dabNotch = config.conf["devices"][selectedName]["dabNotch"];
             }
+            // Hack - Always force Bias-T off
             if (config.conf["devices"][selectedName].contains("biast")) {
-                rsp1a_biasT = config.conf["devices"][selectedName]["biast"];
+                //rsp1a_biasT = config.conf["devices"][selectedName]["biast"];
+                rsp1a_biasT = false;
             }
         }
         else if (openDev.hwVer == SDRPLAY_RSP2_ID) {
@@ -762,8 +764,10 @@ private:
             SmGui::LeftLabel("IF Gain");
             SmGui::FillWidth();
 
-            // MIDI
+            // MIDI - Disable IF Gain Knob if AGC = true
             knob = midi.getIfGain(&_this->gain, 59, 20);
+            if(_this->agc > 0) {knob = false}
+
             slider = SmGui::SliderInt(CONCAT("##sdrplay_gain", _this->name), &_this->gain, 59, 20, SmGui::FMT_STR_NONE);
             if (knob || slider) {
                 if (_this->running) {
