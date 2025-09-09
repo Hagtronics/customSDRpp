@@ -766,7 +766,7 @@ private:
 
             // MIDI - Disable IF Gain Knob if AGC = true
             knob = midi.getIfGain(&_this->gain, 59, 20);
-            if(_this->agc > 0) {knob = false}
+            if(_this->agc > 0) {knob = false;}
 
             slider = SmGui::SliderInt(CONCAT("##sdrplay_gain", _this->name), &_this->gain, 59, 20, SmGui::FMT_STR_NONE);
             if (knob || slider) {
