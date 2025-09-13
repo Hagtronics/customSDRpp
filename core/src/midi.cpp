@@ -166,12 +166,12 @@ void midi_msg_cb(double deltatime, std::vector<unsigned char>* message, void* /*
                     gainChanged.store(true);
                     break;
 
-                case 14: // Pan H
-                    currentPanHKnob.store((int)message->at(2));
+                case 14: // Pan L
+                    currentPanLKnob.store((int)message->at(2));
                     break;
 
-                case 15: // Pan L
-                    currentPanLKnob.store((int)message->at(2));
+                case 15: // Pan H
+                    currentPanHKnob.store((int)message->at(2));
                     break;
 
                 case 16: // Bandwidth
@@ -472,4 +472,5 @@ bool Midi::getStepMinus() {
     if(Midi::midiDisabled) return false;
     return false;
 }
+
 
