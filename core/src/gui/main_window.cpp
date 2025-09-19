@@ -373,8 +373,9 @@ void MainWindow::draw() {
     }
     if (playButtonLocked && !tmpPlaySate) { style::endDisabled(); }
 
-    // Hack - Always start
-    autostart = true;
+    // Hack - Always start - Always start only works if a known source has been run already.
+    // Otherwise you can never select a source and SDR++ won't ever work.
+    // autostart = true;
 
     // Handle auto-start
     if (autostart) {
