@@ -377,11 +377,12 @@ void MainWindow::draw() {
     // Otherwise you can never select a source and SDR++ won't ever work.
     // autostart = true;
 
+    autostart = false;
     // Handle auto-start
-    if (autostart) {
-        autostart = false;
-        setPlayState(true);
-    }
+    //if (autostart) {
+    //    autostart = false;
+    //    setPlayState(true);
+    //}
 
     ImGui::SameLine();
     float origY = ImGui::GetCursorPosY();
